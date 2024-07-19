@@ -1865,6 +1865,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1824058485055354154, guid: bdfd56e003a9ceb4f871f61297d993f1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 151.8071
+      objectReference: {fileID: 0}
+    - target: {fileID: 1824058485055354154, guid: bdfd56e003a9ceb4f871f61297d993f1, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 143.4343
+      objectReference: {fileID: 0}
+    - target: {fileID: 1824058485055354154, guid: bdfd56e003a9ceb4f871f61297d993f1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -125.903564
+      objectReference: {fileID: 0}
+    - target: {fileID: 1824058485055354154, guid: bdfd56e003a9ceb4f871f61297d993f1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 121.71713
+      objectReference: {fileID: 0}
+    - target: {fileID: 3076539901436421365, guid: bdfd56e003a9ceb4f871f61297d993f1, type: 3}
+      propertyPath: m_text
+      value: '(MRB)
+
+        Skill
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3076539901436421365, guid: bdfd56e003a9ceb4f871f61297d993f1, type: 3}
+      propertyPath: m_enableWordWrapping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3795662349369152174, guid: bdfd56e003a9ceb4f871f61297d993f1, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1948,6 +1976,10 @@ PrefabInstance:
     - target: {fileID: 5835127097421773964, guid: bdfd56e003a9ceb4f871f61297d993f1, type: 3}
       propertyPath: m_Name
       value: Battle_Ui
+      objectReference: {fileID: 0}
+    - target: {fileID: 7281392653387244268, guid: bdfd56e003a9ceb4f871f61297d993f1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

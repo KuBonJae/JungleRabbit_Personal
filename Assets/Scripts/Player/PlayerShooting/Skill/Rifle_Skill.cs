@@ -61,46 +61,42 @@ public class Rifle_Skill : MonoBehaviour
                     rifle.GetComponent<Gun_Rifle>().skill = skill;
                     skillCool = 0;
 
-                    for (int i = 0; i < CoolDownUI.Length; i++)
-                    {
-                        if (CoolDownUI[i] != null)
-                        {
-                            CoolDownUI[i].SetActive(true);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
+                    //for (int i = 0; i < CoolDownUI.Length; i++)
+                    //{
+                    //    if (CoolDownUI[i] != null)
+                    //    {
+                    //        CoolDownUI[i].SetActive(true);
+                    //    }
+                    //    else
+                    //    {
+                    //        break;
+                    //    }
+                    //}
                 }
             }
 
             if(skillCoolTime - skillCool > 0)
             {
                 coolTIme = skillCoolTime - skillCool;
+                skillCool += Time.deltaTime;
+                skillCoolDownText.text = coolTIme.ToString("0.0");
             }
             else if(skillCoolTime - skillCool < 0)
             {
-                for (int i = 0; i < CoolDownUI.Length; i++)
-                {
-                    if (CoolDownUI[i] != null)
-                    {
-                        CoolDownUI[i].SetActive(false);
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
+                //for (int i = 0; i < CoolDownUI.Length; i++)
+                //{
+                //    if (CoolDownUI[i] != null)
+                //    {
+                //        CoolDownUI[i].SetActive(false);
+                //    }
+                //    else
+                //    {
+                //        break;
+                //    }
+                //}
+                skillCoolDownText.text = "(MRB)\nSkill";
             }
-
-            skillCool = skillCool + Time.deltaTime;
-            skillCoolDownText.text = coolTIme.ToString("0.0");
-
-
         }
-
     }
-
 }
 

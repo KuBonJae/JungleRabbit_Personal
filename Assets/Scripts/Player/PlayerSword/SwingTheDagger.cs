@@ -11,7 +11,8 @@ public class SwingTheDagger : MonoBehaviour
     public GameObject yeolpacham;
     //GameObject powerSlash;
     float deltaAngle = 0;
-    float deltaTime = 0;
+    //float deltaTime = 0;
+    bool skillReady = true;
     float coolTime = 0.5f;
     float lifespan = 2.0f;
     float swingAngle = 90.0f;
@@ -65,16 +66,17 @@ public class SwingTheDagger : MonoBehaviour
                 StartCoroutine("Swing");
             }
         }
-        if (ManagingInput.GetMouseButtonDown(1) && (deltaTime == 0 || deltaTime >= coolTime) && DataManager.Instance.specialWeaponGet && DataManager.Instance.SpecialWeapon == "ShortSword")
+        if (ManagingInput.GetMouseButtonDown(1) && /*(deltaTime == 0 || deltaTime >= coolTime)*/skillReady && DataManager.Instance.specialWeaponGet && DataManager.Instance.SpecialWeapon == "ShortSword")
         {
-            deltaTime = 0;
+            //deltaTime = 0;
+            skillReady = false;
 
-            for (int i = 0; i < CoolDownUI.Length; i++)
-            {
-                if (CoolDownUI[i] == null)
-                    break;
-                CoolDownUI[i].SetActive(true);
-            }
+            //for (int i = 0; i < CoolDownUI.Length; i++)
+            //{
+            //    if (CoolDownUI[i] == null)
+            //        break;
+            //    CoolDownUI[i].SetActive(true);
+            //}
 
             StartCoroutine(PowerSlash(0f));
         }
@@ -97,6 +99,55 @@ public class SwingTheDagger : MonoBehaviour
             }
         }
     }
+    //IEnumerator PowerSlash(float t)
+    //{
+    //    Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+    //    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+    //
+    //    Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+    //
+    //    GameObject powerSlash = Instantiate(yeolpacham, new Vector2(transform.position.x, transform.position.y) + direction.normalized * 2, rotation);
+    //    q.Enqueue(powerSlash);
+    //
+    //    while (true)
+    //    {
+    //        yield return null;
+    //        if (powerSlash.IsDestroyed())
+    //        {
+    //            q.Dequeue();
+    //            //deltaTime = 0;
+    //            break;
+    //        }
+    //        Vector3 dir3 = rotation.eulerAngles;
+    //        Vector3 dir = new Vector3(Mathf.Cos(dir3.z * Mathf.Deg2Rad), Mathf.Sin(dir3.z * Mathf.Deg2Rad), 0);
+    //        powerSlash.transform.position += dir.normalized * Time.deltaTime * 50;
+    //        deltaTime += Time.deltaTime;
+    //        t += Time.deltaTime;
+    //
+    //        
+    //
+    //        if(deltaTime >= coolTime /*&& CoolDownUI[0].activeSelf*/)
+    //        {
+    //            //for (int i = 0; i < CoolDownUI.Length; i++)
+    //            //{
+    //            //    if (CoolDownUI[i] == null)
+    //            //        break;
+    //            //    CoolDownUI[i].SetActive(false);
+    //            //}
+    //            deltaTime = 0;
+    //            skillCoolDownText.text = "(MRB)\nSkill";
+    //        }
+    //        else
+    //            skillCoolDownText.text = (coolTime - deltaTime).ToString("0.0");
+    //
+    //        if (t >= lifespan)
+    //        {
+    //            Destroy(q.Dequeue());
+    //            break;
+    //        }
+    //    }
+    //}
+
     IEnumerator PowerSlash(float t)
     {
         Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
@@ -105,38 +156,46 @@ public class SwingTheDagger : MonoBehaviour
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
         GameObject powerSlash = Instantiate(yeolpacham, new Vector2(transform.position.x, transform.position.y) + direction.normalized * 2, rotation);
-        q.Enqueue(powerSlash);
+        //q.Enqueue(powerSlash);
+
+        float checkCoolTime = 0f;
+        bool skillAlreadyReady = false;
 
         while (true)
         {
             yield return null;
-            if (powerSlash.IsDestroyed())
-            {
-                q.Dequeue();
-                deltaTime = 0;
-                break;
-            }
+            //if (powerSlash.IsDestroyed())
+            //{
+            //    q.Dequeue();
+            //    //deltaTime = 0;
+            //    break;
+            //}
             Vector3 dir3 = rotation.eulerAngles;
             Vector3 dir = new Vector3(Mathf.Cos(dir3.z * Mathf.Deg2Rad), Mathf.Sin(dir3.z * Mathf.Deg2Rad), 0);
             powerSlash.transform.position += dir.normalized * Time.deltaTime * 50;
-            deltaTime += Time.deltaTime;
+            checkCoolTime += Time.deltaTime;
             t += Time.deltaTime;
 
-            skillCoolDownText.text = (coolTime - deltaTime).ToString("0.0");
 
-            if(deltaTime >= coolTime && CoolDownUI[0].activeSelf)
+
+            if (checkCoolTime >= coolTime && !skillAlreadyReady/*&& CoolDownUI[0].activeSelf*/)
             {
-                for (int i = 0; i < CoolDownUI.Length; i++)
-                {
-                    if (CoolDownUI[i] == null)
-                        break;
-                    CoolDownUI[i].SetActive(false);
-                }
+                //for (int i = 0; i < CoolDownUI.Length; i++)
+                //{
+                //    if (CoolDownUI[i] == null)
+                //        break;
+                //    CoolDownUI[i].SetActive(false);
+                //}
+                skillReady = true;
+                skillAlreadyReady = true;
+                skillCoolDownText.text = "(MRB)\nSkill";
             }
+            if(!skillAlreadyReady)
+                skillCoolDownText.text = (coolTime - checkCoolTime).ToString("0.0");
 
             if (t >= lifespan)
             {
-                Destroy(q.Dequeue());
+                Destroy(powerSlash);
                 break;
             }
         }

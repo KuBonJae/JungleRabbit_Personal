@@ -68,12 +68,12 @@ public class SwingTheAxe : MonoBehaviour
         {
             deltaTime = 0;
 
-            for (int i = 0; i < CoolDownUI.Length; i++)
-            {
-                if (CoolDownUI[i] == null)
-                    break;
-                CoolDownUI[i].SetActive(true);
-            }
+            //for (int i = 0; i < CoolDownUI.Length; i++)
+            //{
+            //    if (CoolDownUI[i] == null)
+            //        break;
+            //    CoolDownUI[i].SetActive(true);
+            //}
 
             Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -105,24 +105,6 @@ public class SwingTheAxe : MonoBehaviour
     }
     IEnumerator PowerSlash(Quaternion rot)
     {
-        //while (true)
-        //{
-        //    yield return null;
-        //    Vector3 dir3 = rot.eulerAngles;
-        //    Vector3 dir = new Vector3(Mathf.Cos(dir3.z * Mathf.Deg2Rad), Mathf.Sin(dir3.z * Mathf.Deg2Rad), 0);
-        //    powerSlash.transform.position += dir.normalized * Time.deltaTime * 50;
-        //    deltaTime += Time.deltaTime;
-        //    powerSlash.transform.Rotate(Vector3.forward * Time.deltaTime * 1000.0f);
-        //    if (deltaTime >= lifespan)
-        //        break;
-        //}
-        //
-        //while (deltaTime < coolTime)
-        //    deltaTime += Time.deltaTime;
-        //
-        //deltaTime = 0;
-        //Destroy(powerSlash);
-
         while (true)
         {
             yield return null;
@@ -143,12 +125,13 @@ public class SwingTheAxe : MonoBehaviour
 
             if (deltaTime >= coolTime)
             {
-                for (int i = 0; i < CoolDownUI.Length; i++)
-                {
-                    if (CoolDownUI[i] == null)
-                        break;
-                    CoolDownUI[i].SetActive(false);
-                }
+                //for (int i = 0; i < CoolDownUI.Length; i++)
+                //{
+                //    if (CoolDownUI[i] == null)
+                //        break;
+                //    CoolDownUI[i].SetActive(false);
+                //}
+                skillCoolDownText.text = "(MRB)\nSkill";
                 break;
             }
         }

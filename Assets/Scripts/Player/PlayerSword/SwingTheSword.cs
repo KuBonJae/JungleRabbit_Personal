@@ -56,12 +56,12 @@ public class SwingTheSword : MonoBehaviour
         {
             deltaTime = 0;
 
-            for (int i = 0; i < CoolDownUI.Length; i++)
-            {
-                if (CoolDownUI[i] == null)
-                    break;
-                CoolDownUI[i].SetActive(true);
-            }
+            //for (int i = 0; i < CoolDownUI.Length; i++)
+            //{
+            //    if (CoolDownUI[i] == null)
+            //        break;
+            //    CoolDownUI[i].SetActive(true);
+            //}
 
             Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -114,12 +114,13 @@ public class SwingTheSword : MonoBehaviour
 
             if (deltaTime >= coolTime)
             {
-                for (int i = 0; i < CoolDownUI.Length; i++)
-                {
-                    if (CoolDownUI[i] == null)
-                        break;
-                    CoolDownUI[i].SetActive(false);
-                }
+                //for (int i = 0; i < CoolDownUI.Length; i++)
+                //{
+                //    if (CoolDownUI[i] == null)
+                //        break;
+                //    CoolDownUI[i].SetActive(false);
+                //}
+                skillCoolDownText.text = "(MRB)\nSkill";
                 break;
             }
         }
