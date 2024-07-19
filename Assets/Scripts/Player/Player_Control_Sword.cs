@@ -26,6 +26,7 @@ public class Player_Control_Sword : MonoBehaviour
     bool dash_ing = false;
     float dashDelay = 0.15f;
     float deltaDashDelay = 0f;
+    bool justOneDashPerOneClick = true;
 
     // UI
     public GameObject map;
@@ -108,13 +109,15 @@ public class Player_Control_Sword : MonoBehaviour
     {
         Block();
         toggleMap();
-        if (ManagingInput.GetKeyDown(KeyCode.Space))
+        if (ManagingInput.GetKeyDown(KeyCode.Space) && justOneDashPerOneClick)
         {
             baseSkill();
+            justOneDashPerOneClick = false;
         }
         else if (ManagingInput.GetKeyUp(KeyCode.Space))
         {
             //speed = DataManager.Instance.firstSpeed + DataManager.Instance.additionalSpeed;
+            justOneDashPerOneClick = true;
         }
 
         transform.Translate(Vector2.right * horizontalInput * Time.deltaTime * speed);
@@ -147,7 +150,7 @@ public class Player_Control_Sword : MonoBehaviour
         {
             GameObject.Find("Canvas_Dash").transform.GetChild(dashCount).gameObject.SetActive(false);
             dashCount--;
-            speed *= 3;
+            speed = DataManager.Instance.Speed * 3;
             StartCoroutine("DashCutter");
             dash_ing = true;
             //speed = DataManager.Instance.firstSpeed + DataManager.Instance.additionalSpeed;
