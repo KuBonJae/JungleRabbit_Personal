@@ -338,19 +338,22 @@ public class Player_Control : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (!DataManager.Instance.DashState)
+        if (collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("BOSS") || collision.gameObject.CompareTag("EnemyWeapon"))
         {
-            if (!DataManager.Instance.beHit)
+            if (!DataManager.Instance.DashState)
             {
-                DataManager.Instance.beHit = true;
-                Debug.Log("피해입음!");
-                this.gameObject.GetComponent<HitEffect>().TriggerHitEffect();
-                DataManager.Instance.Health = DataManager.Instance.Health - 0.5f;
-
-                if (DataManager.Instance.Health <= 0)
+                if (!DataManager.Instance.beHit)
                 {
-                    DataManager.Instance.beHit = false;
-                    DataManager.Instance.isDead = true;
+                    DataManager.Instance.beHit = true;
+                    Debug.Log("피해입음!");
+                    this.gameObject.GetComponent<HitEffect>().TriggerHitEffect();
+                    DataManager.Instance.Health = DataManager.Instance.Health - 0.5f;
+
+                    if (DataManager.Instance.Health <= 0)
+                    {
+                        DataManager.Instance.beHit = false;
+                        DataManager.Instance.isDead = true;
+                    }
                 }
             }
         }
