@@ -24,8 +24,6 @@ public class EnemyHeat : MonoBehaviour
     bool beDamaged = false;
     float height = 1.5f;
     float deltaHeight = 0f;
-    Queue<GameObject> gameObjectQueue;
-    Queue<float> timeQueue;
 
     // Start is called before the first frame update
     void Start()

@@ -23,6 +23,9 @@ public class Player_Control_Sword : MonoBehaviour
     public float speed;
     int dashCount = 2;
     float dashCoolTime = 0f;
+    bool dash_ing = false;
+    float dashDelay = 0.15f;
+    float deltaDashDelay = 0f;
 
     // UI
     public GameObject map;
@@ -38,6 +41,7 @@ public class Player_Control_Sword : MonoBehaviour
         StartCoroutine("Flip");
         StartCoroutine("ChargeDash");
         StartCoroutine("HitDelay");
+        StartCoroutine("DashSpeed");
         dashCount = DataManager.Instance.DashCount;
         healthUIManager.SethealthCount(DataManager.Instance.Health);
     }
@@ -110,7 +114,7 @@ public class Player_Control_Sword : MonoBehaviour
         }
         else if (ManagingInput.GetKeyUp(KeyCode.Space))
         {
-            speed = DataManager.Instance.Speed;
+            //speed = DataManager.Instance.firstSpeed + DataManager.Instance.additionalSpeed;
         }
 
         transform.Translate(Vector2.right * horizontalInput * Time.deltaTime * speed);
@@ -145,6 +149,26 @@ public class Player_Control_Sword : MonoBehaviour
             dashCount--;
             speed *= 3;
             StartCoroutine("DashCutter");
+            dash_ing = true;
+            //speed = DataManager.Instance.firstSpeed + DataManager.Instance.additionalSpeed;
+        }
+    }
+
+    IEnumerator DashSpeed()
+    {
+        while(true)
+        {
+            yield return null; 
+            if(dash_ing)
+            {
+                deltaDashDelay += Time.deltaTime;
+                if(deltaDashDelay > dashDelay)
+                {
+                    speed = DataManager.Instance.Speed;
+                    deltaDashDelay = 0f;
+                    dash_ing = false;
+                }    
+            }
         }
     }
 
@@ -156,7 +180,7 @@ public class Player_Control_Sword : MonoBehaviour
         yield return new WaitForSeconds(0.25f);
         //dashState = false;
         DataManager.Instance.DashState = false;
-        this.gameObject.layer = 0;
+        this.gameObject.layer = 6;
     }
 
     IEnumerator ChargeDash()
