@@ -34,7 +34,7 @@ public class Gun_Basic_Shooting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0) && ammo > 0 && !isReloading)
+        if (ManagingInput.GetMouseButton(0) && ammo > 0 && !isReloading)
         {
             if (Time.time > shotTime)
             {
@@ -56,7 +56,7 @@ public class Gun_Basic_Shooting : MonoBehaviour
         {
             StartCoroutine("ReloadTime");
         }
-        if (Input.GetKeyDown(KeyCode.R))
+        if (ManagingInput.GetKeyDown(KeyCode.R))
         {
             StartCoroutine("ReloadTime");
         }

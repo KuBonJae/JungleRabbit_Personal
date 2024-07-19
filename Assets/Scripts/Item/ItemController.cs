@@ -68,13 +68,28 @@ public class ItemController : MonoBehaviour
         {
             case "card1":
                 Debug.Log("에픽스킬!");
-                DataManager.Instance.epicSkill = true;
                 if (DataManager.Instance.SpecialWeapon == SpecialWeaponType.ShortSword.ToString())
                     DataManager.Instance.ShurikenDamage += 2;
                 if (DataManager.Instance.SpecialWeapon == SpecialWeaponType.LongSword.ToString())
                     DataManager.Instance.SwordLength += 1f;
                 if (DataManager.Instance.SpecialWeapon == SpecialWeaponType.Axe.ToString())
                     DataManager.Instance.AxeDamage += 5;
+                if(DataManager.Instance.SpecialWeapon == SpecialWeaponType.ShotGun.ToString())
+                {
+                    if (DataManager.Instance.epicSkill)
+                        DataManager.Instance.SkillDamage *= 1.25f;
+                }
+                if(DataManager.Instance.SpecialWeapon == SpecialWeaponType.Sniper.ToString())
+                {
+                    if (DataManager.Instance.epicSkill)
+                        DataManager.Instance.SkillDamage *= 1.25f;
+                }
+                if(DataManager.Instance.SpecialWeapon == SpecialWeaponType.Rifle.ToString())
+                {
+                    if (DataManager.Instance.epicSkill)
+                        DataManager.Instance.SkillDamage *= 1.25f;
+                }
+                DataManager.Instance.epicSkill = true;
                 break;
             case "card2":
                 DataManager.Instance.additionalDashCount += 1;
@@ -88,8 +103,10 @@ public class ItemController : MonoBehaviour
                 break;
             case "card4":
                 Debug.Log("공격속도증가!");
-                DataManager.Instance.additionalAttackSpeed -= 0.02f;
-
+                if (DataManager.Instance.Weapon == WeaponType.Gun.ToString())
+                    DataManager.Instance.additionalAttackSpeed -= 0.02f;
+                else
+                    DataManager.Instance.additionalAttackSpeed += 50f;
                 break;
             case "card5":
                 Debug.Log("이동속도증가!");
@@ -128,32 +145,47 @@ public class ItemController : MonoBehaviour
     private GameObject RandcomCard()
     {
         GameObject card = null;
-        int rand = DataManager.Instance.specialWeaponGet ? Random.Range(1, 22) : Random.Range(6, 22);
-        if (rand <= 5 && !DataManager.Instance.epicSkill)
+        int rand = DataManager.Instance.specialWeaponGet ? Random.Range(1, 21) : Random.Range(5, 21);
+        if (rand <= 4 /*&& !DataManager.Instance.epicSkill*/)
         {
             string effect = "";
             if (DataManager.Instance.SpecialWeapon == SpecialWeaponType.ShortSword.ToString())
-                effect = "Powerful Shuriken!\nDamage + 1";
+                effect = "Powerful Shuriken!\nDamage ++";
             if (DataManager.Instance.SpecialWeapon == SpecialWeaponType.LongSword.ToString())
-                effect = "Longer Sword!\nLength + 1";
+                effect = "Longer Sword!\nLength ++";
             if (DataManager.Instance.SpecialWeapon == SpecialWeaponType.Axe.ToString())
-                effect = "Powerful Axe!\nDamage + 1";
+                effect = "Powerful Axe!\nDamage ++";
             if (DataManager.Instance.SpecialWeapon == SpecialWeaponType.ShotGun.ToString())
-                effect = "[RightClick]\nHuge Shotgun!";
+            {
+                if (!DataManager.Instance.epicSkill)
+                    effect = "[RightClick]\nHuge Shotgun!";
+                else
+                    effect = "Powerful Shotgun!\nDamage ++";
+            }
             if (DataManager.Instance.SpecialWeapon == SpecialWeaponType.Rifle.ToString())
-                effect = "[RightClick]\nPowerful Rifle!";
+            {
+                if (!DataManager.Instance.epicSkill)
+                    effect = "[RightClick]\nPowerful Rifle!";
+                else
+                    effect = "Powerful Rifle!\nDamage ++";
+            }
             if (DataManager.Instance.SpecialWeapon == SpecialWeaponType.Sniper.ToString())
-                effect = "[RightClick]\nBIG BULLET!";
+            {
+                if (!DataManager.Instance.epicSkill)
+                    effect = "[RightClick]\nBIG BULLET!";
+                else
+                    effect = "BIG BULLET!\nDamage ++";
+            }
 
             card = Instantiate(epicCard, CardSelectUI.transform);
             card.gameObject.name = "card1";
             card.transform.Find("Explain").GetComponent<TextMeshProUGUI>().text = "Now, you can kill them all....";
             card.transform.Find("Effect").GetComponent<TextMeshProUGUI>().text = effect;
         }
-        else if (rand <= 7)
+        else if (rand <= 6)
         {
             card = Instantiate(epicCard, CardSelectUI.transform);
-            if (rand == 6)
+            if (rand == 5)
             {
                 card.gameObject.name = "card2";
                 card.transform.Find("Explain").GetComponent<TextMeshProUGUI>().text = "DASH COUNT\n+ 1";
@@ -169,38 +201,38 @@ public class ItemController : MonoBehaviour
         else
         {
             card = Instantiate(normalCard, CardSelectUI.transform);
-            switch (rand % 6)
+            switch (rand % 4)
             {
                 case 0:
                     card.gameObject.name = "card4";
-                    card.transform.Find("Explain").GetComponent<TextMeshProUGUI>().text = "Attack speed\n- 0.02";
+                    card.transform.Find("Explain").GetComponent<TextMeshProUGUI>().text = "Attack speed ++";
                     card.transform.Find("Effect").GetComponent<TextMeshProUGUI>().text = "Attack more!";
                     break;
                 case 1:
                     card.gameObject.name = "card5";
-                    card.transform.Find("Explain").GetComponent<TextMeshProUGUI>().text = "Move speed\n+ 1.5";
+                    card.transform.Find("Explain").GetComponent<TextMeshProUGUI>().text = "Move speed ++";
                     card.transform.Find("Effect").GetComponent<TextMeshProUGUI>().text = "Move faster!";
                     break;
                 case 2:
                     card.gameObject.name = "card6";
-                    card.transform.Find("Explain").GetComponent<TextMeshProUGUI>().text = "Attack damage\n+ 0.4";
+                    card.transform.Find("Explain").GetComponent<TextMeshProUGUI>().text = "Attack damage ++";
                     card.transform.Find("Effect").GetComponent<TextMeshProUGUI>().text = "Attack harder!";
                     break;
                 case 3:
                     card.gameObject.name = "card7";
-                    card.transform.Find("Explain").GetComponent<TextMeshProUGUI>().text = "Recover Health\n+ 0.5";
+                    card.transform.Find("Explain").GetComponent<TextMeshProUGUI>().text = "Recover Health ++";
                     card.transform.Find("Effect").GetComponent<TextMeshProUGUI>().text = "Don't die!";
                     break;
-                case 4:
-                    card.gameObject.name = "card8";
-                    card.transform.Find("Explain").GetComponent<TextMeshProUGUI>().text = "OOPS!";
-                    card.transform.Find("Effect").GetComponent<TextMeshProUGUI>().text = "Maybe next chance...";
-                    break;
-                case 5:
-                    card.gameObject.name = "card9";
-                    card.transform.Find("Explain").GetComponent<TextMeshProUGUI>().text = "Random";
-                    card.transform.Find("Effect").GetComponent<TextMeshProUGUI>().text = "It's literally Random.";
-                    break;
+                //case 4:
+                //    card.gameObject.name = "card8";
+                //    card.transform.Find("Explain").GetComponent<TextMeshProUGUI>().text = "OOPS!";
+                //    card.transform.Find("Effect").GetComponent<TextMeshProUGUI>().text = "Maybe next chance...";
+                //    break;
+                //case 4:
+                //    card.gameObject.name = "card9";
+                //    card.transform.Find("Explain").GetComponent<TextMeshProUGUI>().text = "Random";
+                //    card.transform.Find("Effect").GetComponent<TextMeshProUGUI>().text = "It's literally Random.";
+                //    break;
                 default:
                     break;
             }

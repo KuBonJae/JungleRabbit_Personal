@@ -40,7 +40,7 @@ public class Sniper_Skill : MonoBehaviour
     {
         if (DataManager.Instance.epicSkill)
         {
-            if (Input.GetMouseButton(1) && skillCool > skillCoolTime)
+            if (ManagingInput.GetMouseButton(1) && skillCool > skillCoolTime)
             {
                 Instantiate(bigBullet, spawnPos.position, rotation.transform.rotation);
                 Instantiate(bulletEffect, spawnPos.position, rotation.transform.rotation);

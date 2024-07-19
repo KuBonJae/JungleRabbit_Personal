@@ -35,7 +35,7 @@ public class SwingTheSword : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0) && !DataManager.Instance.specialWeaponGet)
+        if (ManagingInput.GetMouseButton(0) && !DataManager.Instance.specialWeaponGet)
         {
             if (!swordObject.activeSelf)
             {
@@ -52,7 +52,7 @@ public class SwingTheSword : MonoBehaviour
                 StartCoroutine("Swing");
             }
         }
-        if (Input.GetMouseButtonDown(1) && (deltaTime == 0 || deltaTime >= coolTime) && !DataManager.Instance.specialWeaponGet)
+        if (ManagingInput.GetMouseButtonDown(1) && (deltaTime == 0 || deltaTime >= coolTime) && !DataManager.Instance.specialWeaponGet)
         {
             deltaTime = 0;
 
@@ -80,7 +80,7 @@ public class SwingTheSword : MonoBehaviour
         {
             yield return null;
 
-            float delta = DataManager.Instance.AttacSpeed * Time.deltaTime;
+            float delta = (DataManager.Instance.firstAttackSpeed + DataManager.Instance.additionalAttackSpeed) * Time.deltaTime;
 
             transform.Rotate(-Vector3.forward * delta);
             deltaAngle += delta;

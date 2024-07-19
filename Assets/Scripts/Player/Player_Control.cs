@@ -55,9 +55,30 @@ public class Player_Control : MonoBehaviour
     void Update()
     {
         // Player Movement
-        horizontalInput = Input.GetAxis("Horizontal");
-        verticalInput = Input.GetAxis("Vertical");
+        horizontalInput = ManagingInput.GetAxis("Horizontal");
+        verticalInput = ManagingInput.GetAxis("Vertical");
 
+        if(SceneManager.GetActiveScene().name == "BossScene")
+        {
+            if(GameObject.Find("Camera").transform.Find("BossCam").gameObject.activeSelf)
+            {
+                ManagingInput.blockInputs = true;
+            }
+            else
+            {
+                ManagingInput.blockInputs = false;
+                UpdateData();
+            }
+        }
+        else
+        {
+            ManagingInput.blockInputs = false;
+            UpdateData();
+        }
+    }
+
+    private void UpdateData()
+    {
         Block();
         transform.Translate(Vector2.right * horizontalInput * Time.deltaTime * DataManager.Instance.Speed);
         transform.Translate(Vector2.up * verticalInput * Time.deltaTime * DataManager.Instance.Speed);
@@ -89,10 +110,14 @@ public class Player_Control : MonoBehaviour
     //Toogle Map 
     private void toggleMap()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (ManagingInput.GetKeyDown(KeyCode.Tab))
         {
             map.SetActive(!map.activeSelf);
             keyGuide.SetActive(!keyGuide.activeSelf);
+            if (map.activeSelf)
+                Time.timeScale = 0f;
+            else
+                Time.timeScale = 1f;
         }
     }
 
@@ -161,6 +186,82 @@ public class Player_Control : MonoBehaviour
                 }
             }
         }
+
+        RaycastHit2D[] hitDownRight = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.right).normalized);
+        for (int i = 0; i < hitDownRight.Length; i++)
+        {
+            if (hitDownRight[i].transform != null)
+            {
+                if (hitDownRight[i].distance < 0.5 && hitDownRight[i].collider.CompareTag("Wall"))
+                {
+                    if (horizontalInput > 0)
+                    {
+                        horizontalInput = 0;
+                    }
+                    if(verticalInput < 0)
+                    {
+                        verticalInput = 0;
+                    }
+                }
+            }
+        }
+
+        RaycastHit2D[] hitDownLeft = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.right).normalized);
+        for (int i = 0; i < hitDownLeft.Length; i++)
+        {
+            if (hitDownLeft[i].transform != null)
+            {
+                if (hitDownLeft[i].distance < 0.5 && hitDownLeft[i].collider.CompareTag("Wall"))
+                {
+                    if (horizontalInput < 0)
+                    {
+                        horizontalInput = 0;
+                    }
+                    if (verticalInput < 0)
+                    {
+                        verticalInput = 0;
+                    }
+                }
+            }
+        }
+
+        RaycastHit2D[] hitUpRight = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.right).normalized);
+        for (int i = 0; i < hitUpRight.Length; i++)
+        {
+            if (hitUpRight[i].transform != null)
+            {
+                if (hitUpRight[i].distance < 0.5 && hitUpRight[i].collider.CompareTag("Wall"))
+                {
+                    if (horizontalInput > 0)
+                    {
+                        horizontalInput = 0;
+                    }
+                    if (verticalInput > 0)
+                    {
+                        verticalInput = 0;
+                    }
+                }
+            }
+        }
+
+        RaycastHit2D[] hitUpLeft = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.right).normalized);
+        for (int i = 0; i < hitUpLeft.Length; i++)
+        {
+            if (hitUpLeft[i].transform != null)
+            {
+                if (hitUpLeft[i].distance < 0.5 && hitUpLeft[i].collider.CompareTag("Wall"))
+                {
+                    if (horizontalInput < 0)
+                    {
+                        horizontalInput = 0;
+                    }
+                    if (verticalInput > 0)
+                    {
+                        verticalInput = 0;
+                    }
+                }
+            }
+        }
     }
 
     // player Death
@@ -175,12 +276,12 @@ public class Player_Control : MonoBehaviour
     // player movement skill
     public void baseSkill()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !isDashing && !DataManager.Instance.DashState)
+        if (ManagingInput.GetKeyDown(KeyCode.Space) && !isDashing && !DataManager.Instance.DashState)
         {
             BaseSkill();
             //DataManager.Instance.DashCount--;
         }
-        else if (Input.GetKeyUp(KeyCode.Space))
+        else if (ManagingInput.GetKeyUp(KeyCode.Space))
         {
             DataManager.Instance.Speed = 10.0f;
         }

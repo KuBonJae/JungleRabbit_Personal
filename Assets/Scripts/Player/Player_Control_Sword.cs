@@ -3,12 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player_Control_Sword : MonoBehaviour
 {
 
     public float horizontalInput;
     public float verticalInput;
+    bool up = false;
+    bool down = false;
+    bool right = false;
+    bool left = false;
+    bool upright = false;
+    bool upleft = false;
+    bool downright = false;
+    bool downleft = false;
+    Vector2 prevPosition = new Vector2(951201, 980423);
+
     public float speed;
     int dashCount = 2;
     float dashCoolTime = 0f;
@@ -34,15 +45,70 @@ public class Player_Control_Sword : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
-        verticalInput = Input.GetAxis("Vertical");
+        horizontalInput = ManagingInput.GetAxis("Horizontal");
+        verticalInput = ManagingInput.GetAxis("Vertical");
+
+        if (SceneManager.GetActiveScene().name == "BossScene")
+        {
+            if (GameObject.Find("Camera").transform.Find("BossCam").gameObject.activeSelf)
+            {
+                ManagingInput.blockInputs = true;
+            }
+            else
+            {
+                ManagingInput.blockInputs = false;
+                UpdateData();
+            }
+        }
+        else
+        {
+            ManagingInput.blockInputs = false;
+            UpdateData();
+        }
+
+        if(prevPosition.x == 951201 && prevPosition.y == 980423) // init value, first move
+        {
+            prevPosition.y = transform.position.y;
+            prevPosition.x = transform.position.x;
+        }
+        else
+        {
+            if(up && right && left && down)
+            {
+                Vector2 dir = prevPosition - new Vector2(transform.position.x, transform.position.y);
+                transform.position += new Vector3(dir.normalized.x, dir.normalized.y, 0);
+                up = right = left = down = false;
+            }
+            prevPosition.y = transform.position.y;
+            prevPosition.x = transform.position.x;
+        }
+
+        //Block();
+        //toggleMap();
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    baseSkill();
+        //}
+        //else if (Input.GetKeyUp(KeyCode.Space))
+        //{
+        //    speed = DataManager.Instance.Speed;
+        //}
+        //
+        //transform.Translate(Vector2.right * horizontalInput * Time.deltaTime * speed);
+        //transform.Translate(Vector2.up * verticalInput * Time.deltaTime * speed);
+        //
+        //healthUIManager.SethealthCount(DataManager.Instance.Health);
+    }
+
+    private void UpdateData()
+    {
         Block();
         toggleMap();
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (ManagingInput.GetKeyDown(KeyCode.Space))
         {
             baseSkill();
         }
-        else if (Input.GetKeyUp(KeyCode.Space))
+        else if (ManagingInput.GetKeyUp(KeyCode.Space))
         {
             speed = DataManager.Instance.Speed;
         }
@@ -60,10 +126,14 @@ public class Player_Control_Sword : MonoBehaviour
 
     private void toggleMap()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (ManagingInput.GetKeyDown(KeyCode.Tab))
         {
             map.SetActive(!map.activeSelf);
             keyGuide.SetActive(!keyGuide.activeSelf);
+            if (map.activeSelf)
+                Time.timeScale = 0f;
+            else
+                Time.timeScale = 1f;
         }
     }
 
@@ -159,7 +229,7 @@ public class Player_Control_Sword : MonoBehaviour
     {
         while (true)
         {
-            horizontalInput = Input.GetAxis("Horizontal");
+            horizontalInput = ManagingInput.GetAxis("Horizontal");
 
             yield return null;
             if (horizontalInput < 0)
@@ -202,11 +272,12 @@ public class Player_Control_Sword : MonoBehaviour
         {
             if (hitdown[i].transform != null)
             {
-                if (hitdown[i].distance < 1 && hitdown[i].collider.CompareTag("Wall"))
+                if (hitdown[i].distance < 0.5 && hitdown[i].collider.CompareTag("Wall"))
                 {
                     if (verticalInput < 0)
                     {
                         verticalInput = 0;
+                        down = true;
                     }
                 }
 
@@ -218,11 +289,12 @@ public class Player_Control_Sword : MonoBehaviour
         {
             if (hitup[i].transform != null)
             {
-                if (hitup[i].distance < 1 && hitup[i].collider.CompareTag("Wall"))
+                if (hitup[i].distance < 0.5 && hitup[i].collider.CompareTag("Wall"))
                 {
                     if (verticalInput > 0)
                     {
                         verticalInput = 0;
+                        up = true;
                     }
                 }
             }
@@ -238,6 +310,7 @@ public class Player_Control_Sword : MonoBehaviour
                     if (horizontalInput < 0)
                     {
                         horizontalInput = 0;
+                        left = true;
                     }
                 }
 
@@ -254,9 +327,89 @@ public class Player_Control_Sword : MonoBehaviour
                     if (horizontalInput > 0)
                     {
                         horizontalInput = 0;
+                        right = true;
                     }
                 }
             }
         }
+
+        RaycastHit2D[] hitDownRight = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.right).normalized);
+        for (int i = 0; i < hitDownRight.Length; i++)
+        {
+            if (hitDownRight[i].transform != null)
+            {
+                if (hitDownRight[i].distance < 0.5 && hitDownRight[i].collider.CompareTag("Wall"))
+                {
+                    if (horizontalInput > 0)
+                    {
+                        horizontalInput = 0;
+                    }
+                    if (verticalInput < 0)
+                    {
+                        verticalInput = 0;
+                    }
+                }
+            }
+        }
+
+        RaycastHit2D[] hitDownLeft = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.right).normalized);
+        for (int i = 0; i < hitDownLeft.Length; i++)
+        {
+            if (hitDownLeft[i].transform != null)
+            {
+                if (hitDownLeft[i].distance < 0.5 && hitDownLeft[i].collider.CompareTag("Wall"))
+                {
+                    if (horizontalInput < 0)
+                    {
+                        horizontalInput = 0;
+                    }
+                    if (verticalInput < 0)
+                    {
+                        verticalInput = 0;
+                    }
+                }
+            }
+        }
+
+        RaycastHit2D[] hitUpRight = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.right).normalized);
+        for (int i = 0; i < hitUpRight.Length; i++)
+        {
+            if (hitUpRight[i].transform != null)
+            {
+                if (hitUpRight[i].distance < 0.5 && hitUpRight[i].collider.CompareTag("Wall"))
+                {
+                    if (horizontalInput > 0)
+                    {
+                        horizontalInput = 0;
+                    }
+                    if (verticalInput > 0)
+                    {
+                        verticalInput = 0;
+                    }
+                }
+            }
+        }
+
+        RaycastHit2D[] hitUpLeft = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.right).normalized);
+        for (int i = 0; i < hitUpLeft.Length; i++)
+        {
+            if (hitUpLeft[i].transform != null)
+            {
+                if (hitUpLeft[i].distance < 0.5 && hitUpLeft[i].collider.CompareTag("Wall"))
+                {
+                    if (horizontalInput < 0)
+                    {
+                        horizontalInput = 0;
+                    }
+                    if (verticalInput > 0)
+                    {
+                        verticalInput = 0;
+                    }
+                }
+            }
+        }
+
+        if(!up || !down || !left || !right)
+            up = down = left = right = false;
     }
 }

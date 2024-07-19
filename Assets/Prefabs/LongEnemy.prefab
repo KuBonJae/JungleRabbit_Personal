@@ -655,7 +655,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.9622642, g: 0.040850822, b: 0.040850822, a: 1}
+  m_Color: {r: 0.9622642, g: 0.040850822, b: 0.040850822, a: 0.3137255}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -835,7 +835,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 0.1
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -932,6 +932,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathEffectPrefab: {fileID: 5763951098823652745, guid: 5ae71f8e33ef5ab43beb71806ec277c4, type: 3}
+  hpText: {fileID: 4203466645338746309, guid: 12c73821508ff05468a6afa8eaf23097, type: 3}
+  canvas: {fileID: 0}
 --- !u!61 &3299770449794901941
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
 {
-    private float bulletSpeed = 10.0f;
+    private float bulletSpeed = 25.0f;
 
     private Transform playerTransform;
 
@@ -23,8 +23,8 @@ public class EnemyBullet : MonoBehaviour
     void Update()
     {
         // update bullet transform position by delta time
-        transform.position += (Vector3)(bulletDirection * bulletSpeed * Time.deltaTime);
-
+        //transform.position += (Vector3)(bulletDirection * bulletSpeed * Time.deltaTime);
+        transform.Translate((Vector3)(bulletDirection * bulletSpeed * Time.deltaTime));
     }
 
 

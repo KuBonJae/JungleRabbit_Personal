@@ -37,7 +37,7 @@ public class SwingTheDagger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0) && DataManager.Instance.specialWeaponGet && DataManager.Instance.SpecialWeapon == "ShortSword") 
+        if (ManagingInput.GetMouseButton(0) && DataManager.Instance.specialWeaponGet && DataManager.Instance.SpecialWeapon == "ShortSword") 
         {
             //if(DataManager.Instance.firstClassChage)
             {
@@ -65,7 +65,7 @@ public class SwingTheDagger : MonoBehaviour
                 StartCoroutine("Swing");
             }
         }
-        if (Input.GetMouseButtonDown(1) && (deltaTime == 0 || deltaTime >= coolTime) && DataManager.Instance.specialWeaponGet && DataManager.Instance.SpecialWeapon == "ShortSword")
+        if (ManagingInput.GetMouseButtonDown(1) && (deltaTime == 0 || deltaTime >= coolTime) && DataManager.Instance.specialWeaponGet && DataManager.Instance.SpecialWeapon == "ShortSword")
         {
             deltaTime = 0;
 
@@ -85,8 +85,8 @@ public class SwingTheDagger : MonoBehaviour
         while (deltaAngle < swingAngle)
         {
             yield return null;
-        
-            float delta = swingSpeed * Time.deltaTime;
+
+            float delta = (DataManager.Instance.firstAttackSpeed + DataManager.Instance.additionalAttackSpeed) * Time.deltaTime;
 
             transform.Rotate(-Vector3.forward * delta);
             deltaAngle += delta;

@@ -28,7 +28,7 @@ public class Weapon_Rotation_Sword : MonoBehaviour
     {
         while (true)
         {
-            horizontalInput = Input.GetAxis("Horizontal");
+            horizontalInput = ManagingInput.GetAxis("Horizontal");
 
             yield return null;
             if (horizontalInput < 0)

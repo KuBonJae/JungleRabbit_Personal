@@ -920,7 +920,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 0.1
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -1038,9 +1038,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttackIndicator: {fileID: 7775767149351577435}
   Knife: {fileID: 6536600608511840475}
-  indicate: 0
-  knifeShow: 0
-  delayState: 0
 --- !u!114 &-5030354228447340726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1054,6 +1051,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathEffectPrefab: {fileID: 5763951098823652745, guid: 5ae71f8e33ef5ab43beb71806ec277c4, type: 3}
+  hpText: {fileID: 4203466645338746309, guid: 12c73821508ff05468a6afa8eaf23097, type: 3}
+  canvas: {fileID: 0}
 --- !u!1 &8831180562166487045
 GameObject:
   m_ObjectHideFlags: 0

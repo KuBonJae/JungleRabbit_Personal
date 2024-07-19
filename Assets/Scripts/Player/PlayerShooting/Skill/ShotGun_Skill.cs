@@ -40,7 +40,7 @@ public class ShotGun_Skill : MonoBehaviour
     {
         if (DataManager.Instance.epicSkill)
         {
-            if (Input.GetMouseButton(1) && skillCool > skillCoolTime)
+            if (ManagingInput.GetMouseButton(1) && skillCool > skillCoolTime)
             {
                 for (int i = 0; i < 2; i++)
                 {

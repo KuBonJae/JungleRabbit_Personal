@@ -1,6 +1,8 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -12,16 +14,41 @@ public class EnemyHeat : MonoBehaviour
 
     public ParticleSystem deathEffectPrefab;
 
+    float resetForceCooltime = 1f;
+    float resetForceDelay = 0f;
+
+    public GameObject hpText;
+    public GameObject canvas;
+    GameObject hpTextObject = null;
+    //RectTransform hpRectTransform;
+    bool beDamaged = false;
+    float height = 1.5f;
+    float deltaHeight = 0f;
+    Queue<GameObject> gameObjectQueue;
+    Queue<float> timeQueue;
 
     // Start is called before the first frame update
     void Start()
     {
         enemyHP = 5.0f * DataManager.Instance.StageLevel;
+        //hpRectTransform = hpTextObject.GetComponent<RectTransform>();
+        canvas = GameObject.Find("Canvas");
+        StartCoroutine("ShowDamageText");
+        //StartCoroutine("MoveDamageText");
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (GetComponent<Rigidbody2D>().velocity != Vector2.zero)
+        {
+            resetForceDelay += Time.deltaTime;
+            if(resetForceDelay > resetForceCooltime)
+            {
+                resetForceDelay = 0f;
+                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            }
+        }
     }
 
     // 충돌 시 
@@ -55,11 +82,12 @@ public class EnemyHeat : MonoBehaviour
         }
           */
 
-
-
         // different damage according to weapon type ShortSword, LongSword, Axe, ShotGun, Rifle, Sniper
         if (collision.gameObject.CompareTag("Weapon") || collision.gameObject.CompareTag("Skill"))
         {
+            Vector3 revDir = transform.position - GameObject.FindGameObjectWithTag("Player").transform.position;
+            GetComponent<Rigidbody2D>().AddForce(revDir.normalized * 500f);
+
             if (collision.gameObject.CompareTag("Weapon"))
             {
                 if (DataManager.Instance.Weapon == WeaponType.Gun.ToString())
@@ -77,6 +105,9 @@ public class EnemyHeat : MonoBehaviour
                     Debug.Log("총기 타입 없음!");
                     enemyHP -= DataManager.Instance.Damage;
                 }
+
+                hpText.GetComponent<TextMeshProUGUI>().text = DataManager.Instance.Damage.ToString();
+                beDamaged = true;
             }
             else if (collision.gameObject.CompareTag("Skill"))
             {
@@ -85,37 +116,46 @@ public class EnemyHeat : MonoBehaviour
                 {
                     Debug.Log("도끼 스킬 맞음!");
                     enemyHP -= DataManager.Instance.AxeDamage;
+                    hpText.GetComponent<TextMeshProUGUI>().text = DataManager.Instance.AxeDamage.ToString();
                 }
                 else if (DataManager.Instance.SpecialWeapon == SpecialWeaponType.LongSword.ToString())
                 {
                     Debug.Log("대검 스킬 맞음!");
                     enemyHP -= (DataManager.Instance.Damage * 5f);
+                    hpText.GetComponent<TextMeshProUGUI>().text = (DataManager.Instance.Damage * 5f).ToString();
                 }
                 else if (DataManager.Instance.SpecialWeapon == SpecialWeaponType.ShortSword.ToString())
                 {
                     Debug.Log("단검 스킬 맞음!");
                     enemyHP -= DataManager.Instance.ShurikenDamage;
+                    hpText.GetComponent<TextMeshProUGUI>().text = DataManager.Instance.ShurikenDamage.ToString();
                 }
                 else if (DataManager.Instance.SpecialWeapon == SpecialWeaponType.Sniper.ToString())
                 {
                     Debug.Log("저격 스킬 맞음!");
                     enemyHP -= DataManager.Instance.SkillDamage;
+                    hpText.GetComponent<TextMeshProUGUI>().text = DataManager.Instance.SkillDamage.ToString();
                 }
                 else if (DataManager.Instance.SpecialWeapon == SpecialWeaponType.ShotGun.ToString())
                 {
                     Debug.Log("샷건 스킬 맞음!");
                     enemyHP -= DataManager.Instance.SkillDamage;
+                    hpText.GetComponent<TextMeshProUGUI>().text = DataManager.Instance.SkillDamage.ToString();
                 }
                 else if (DataManager.Instance.SpecialWeapon == SpecialWeaponType.Rifle.ToString())
                 {
                     Debug.Log("라이플 스킬 맞음!");
                     enemyHP -= DataManager.Instance.SkillDamage;
+                    hpText.GetComponent<TextMeshProUGUI>().text = DataManager.Instance.SkillDamage.ToString();
                 }
                 else
                 {
                     Debug.Log("칼 기본 스킬 맞음!");
                     enemyHP -= (DataManager.Instance.Damage * 2.5f);
+                    hpText.GetComponent<TextMeshProUGUI>().text = (DataManager.Instance.Damage * 2.5f).ToString();
                 }
+
+                beDamaged = true;
             }
             else
             {
@@ -204,5 +244,46 @@ public class EnemyHeat : MonoBehaviour
                 break;
         }
     }
-}
 
+    IEnumerator ShowDamageText()
+    {
+        while (true)
+        {
+            yield return null;
+            if(beDamaged)
+            {
+                Vector3 hpTextPos =
+                    Camera.main.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + height, 0));
+
+                hpTextObject = Instantiate(hpText, canvas.transform);
+                hpTextObject.GetComponent<MovingDamageText>().playerObject = this.gameObject;
+                hpTextObject.GetComponent<RectTransform>().position = hpTextPos;
+                hpTextObject = null;
+                beDamaged = false;
+            }
+        }
+    }
+
+    //IEnumerator MoveDamageText()
+    //{
+    //    while(true)
+    //    {
+    //        yield return null;
+    //        if(timeQueue.Count != 0 && Time.time - timeQueue.Peek() < 1f)
+    //        {
+    //            deltaHeight += Time.deltaTime;
+    //
+    //            Vector3 hpTextPos =
+    //                Camera.main.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + height + deltaHeight, 0));
+    //
+    //            hpTextObject.GetComponent<RectTransform>().position = hpTextPos;
+    //            if (deltaHeight > 1f)
+    //            {
+    //                Destroy(hpTextObject);
+    //                hpTextObject = null;
+    //                deltaHeight = 0f;
+    //            }
+    //        }
+    //    }
+    //}
+}

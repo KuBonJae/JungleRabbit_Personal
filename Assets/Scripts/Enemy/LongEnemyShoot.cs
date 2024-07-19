@@ -10,7 +10,7 @@ public class LongEnemyShoot : MonoBehaviour
     // Start is called before the first frame update
 
     float alertDelayTime = 0.5f; // after 0.5s enemy shoots
-    float shootDelayTime = 1.0f; // shoot cool time
+    float shootDelayTime = 2.0f; // shoot cool time
     float alertCoolTime = 0f;
     float shootCoolTime = 0f;
     bool alertState = false;

@@ -44,7 +44,7 @@ public class Rifle_Skill : MonoBehaviour
         {
             if (!skill && skillCool > skillCoolTime)
             {
-                if (Input.GetMouseButton(1))
+                if (ManagingInput.GetMouseButton(1))
                 {
                     skill = true;
                     rifle.GetComponent<Gun_Rifle>().skill = skill;
