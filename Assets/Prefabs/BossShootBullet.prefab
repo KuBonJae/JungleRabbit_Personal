@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 6597146712425056159}
   m_Layer: 7
   m_Name: BossShootBullet
-  m_TagString: BOSS
+  m_TagString: EnemyWeapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
