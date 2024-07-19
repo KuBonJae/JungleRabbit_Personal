@@ -10,7 +10,7 @@ using UnityEngine.InputSystem;
 
 public class EnemyHeat : MonoBehaviour
 {
-    private float enemyHP;
+    public float enemyHP;
 
     public ParticleSystem deathEffectPrefab;
 
@@ -21,9 +21,9 @@ public class EnemyHeat : MonoBehaviour
     public GameObject canvas;
     GameObject hpTextObject = null;
     //RectTransform hpRectTransform;
-    bool beDamaged = false;
-    float height = 1.5f;
-    float deltaHeight = 0f;
+    public bool beDamaged = false;
+    public float height = 1.5f;
+    public float deltaHeight = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +32,6 @@ public class EnemyHeat : MonoBehaviour
         //hpRectTransform = hpTextObject.GetComponent<RectTransform>();
         canvas = GameObject.Find("Canvas");
         StartCoroutine("ShowDamageText");
-        //StartCoroutine("MoveDamageText");
     }
 
     // Update is called once per frame
@@ -79,6 +78,19 @@ public class EnemyHeat : MonoBehaviour
                 break;
         }
           */
+
+        //if(collision.gameObject.CompareTag("Shield"))
+        //{
+        //    Debug.Log("카운터!");
+        //    enemyHP -= DataManager.Instance.Damage;
+        //    hpText.GetComponent<TextMeshProUGUI>().text = DataManager.Instance.Damage.ToString();
+        //    beDamaged = true;
+        //    Vector3 revDir = transform.position - GameObject.FindGameObjectWithTag("Player").transform.position;
+        //    GetComponent<Rigidbody2D>().AddForce(revDir.normalized * 1000f);
+        //    GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Control_Sword>().shield.GetComponent<CircleCollider2D>().enabled = false;
+        //    Time.timeScale = 0.1f;
+        //    StartCoroutine("SlowMotionInCounter");
+        //}
 
         // different damage according to weapon type ShortSword, LongSword, Axe, ShotGun, Rifle, Sniper
         if (collision.gameObject.CompareTag("Weapon") || collision.gameObject.CompareTag("Skill"))
@@ -262,25 +274,18 @@ public class EnemyHeat : MonoBehaviour
         }
     }
 
-    //IEnumerator MoveDamageText()
+    //IEnumerator SlowMotionInCounter()
     //{
-    //    while(true)
+    //    float slowTime = 0f;
+    //    while (true)
     //    {
     //        yield return null;
-    //        if(timeQueue.Count != 0 && Time.time - timeQueue.Peek() < 1f)
+    //
+    //        slowTime += Time.unscaledDeltaTime;
+    //        if (slowTime > 0.05f)
     //        {
-    //            deltaHeight += Time.deltaTime;
-    //
-    //            Vector3 hpTextPos =
-    //                Camera.main.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + height + deltaHeight, 0));
-    //
-    //            hpTextObject.GetComponent<RectTransform>().position = hpTextPos;
-    //            if (deltaHeight > 1f)
-    //            {
-    //                Destroy(hpTextObject);
-    //                hpTextObject = null;
-    //                deltaHeight = 0f;
-    //            }
+    //            Time.timeScale = 1f;
+    //            break;
     //        }
     //    }
     //}

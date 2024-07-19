@@ -35,6 +35,9 @@ public class Player_Control_Sword : MonoBehaviour
     GameObject DashManager;
     //
 
+    public GameObject shield;
+    public bool shieldActivate = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -88,21 +91,40 @@ public class Player_Control_Sword : MonoBehaviour
             prevPosition.x = transform.position.x;
         }
 
-        //Block();
-        //toggleMap();
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    baseSkill();
-        //}
-        //else if (Input.GetKeyUp(KeyCode.Space))
-        //{
-        //    speed = DataManager.Instance.Speed;
-        //}
-        //
-        //transform.Translate(Vector2.right * horizontalInput * Time.deltaTime * speed);
-        //transform.Translate(Vector2.up * verticalInput * Time.deltaTime * speed);
-        //
-        //healthUIManager.SethealthCount(DataManager.Instance.Health);
+        if(Input.GetKeyDown(KeyCode.Q) && !shieldActivate)
+        {
+            shieldActivate = true;
+            shield.SetActive(true);
+            shield.GetComponent<CircleCollider2D>().enabled = true;
+            shield.GetComponent<SpriteRenderer>().color =
+                        new Color(shield.GetComponent<SpriteRenderer>().color.r, shield.GetComponent<SpriteRenderer>().color.g, shield.GetComponent<SpriteRenderer>().color.b, 120);
+            StartCoroutine("ShieldCounter");
+        }
+    }
+
+    IEnumerator ShieldCounter()
+    {
+        float shieldRemainTime = 0f;
+        while(true)
+        {
+            yield return null;
+            shieldRemainTime += Time.unscaledDeltaTime;
+            if (shieldRemainTime > 0.1f)
+            {
+                shield.GetComponent<SpriteRenderer>().color = 
+                    new Color(shield.GetComponent<SpriteRenderer>().color.r, shield.GetComponent<SpriteRenderer>().color.g, shield.GetComponent<SpriteRenderer>().color.b, 0);
+                shield.GetComponent<CircleCollider2D>().enabled = false;
+
+                if (Time.timeScale > 0.5f)
+                {
+                    //shield.GetComponent<SpriteRenderer>().color =
+                    //    new Color(shield.GetComponent<SpriteRenderer>().color.r, shield.GetComponent<SpriteRenderer>().color.g, shield.GetComponent<SpriteRenderer>().color.b, 120);
+                    shield.SetActive(false);
+                    shieldActivate = false;
+                    break;
+                }
+            }
+        }
     }
 
     private void UpdateData()

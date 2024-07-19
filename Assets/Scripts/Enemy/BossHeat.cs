@@ -16,11 +16,14 @@ public class BossHeat : MonoBehaviour
 
     public GameObject hpText;
     public GameObject canvas;
-    GameObject hpTextObject = null;
+    public GameObject hpTextObject = null;
     //RectTransform hpRectTransform;
-    bool beDamaged = false;
+    public bool beDamaged = false;
     float height = 1.5f;
-    float deltaHeight = 0f;
+    //float deltaHeight = 0f;
+
+    float resetForceCooltime = 1f;
+    float resetForceDelay = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +39,15 @@ public class BossHeat : MonoBehaviour
     void Update()
     {
         CheckHp();
-
+        if (GetComponent<Rigidbody2D>().velocity != Vector2.zero)
+        {
+            resetForceDelay += Time.deltaTime;
+            if (resetForceDelay > resetForceCooltime)
+            {
+                resetForceDelay = 0f;
+                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            }
+        }
     }
 
 
@@ -187,6 +198,19 @@ public class BossHeat : MonoBehaviour
             }
         }
         */
+        //if(collision.gameObject.CompareTag("Shield"))
+        //{
+        //    Debug.Log("카운터!");
+        //    bossHP -= DataManager.Instance.Damage;
+        //    hpText.GetComponent<TextMeshProUGUI>().text = DataManager.Instance.Damage.ToString();
+        //    beDamaged = true;
+        //    Vector3 revDir = transform.position - GameObject.FindGameObjectWithTag("Player").transform.position;
+        //    GetComponent<Rigidbody2D>().AddForce(revDir.normalized * 500f);
+        //    GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Control_Sword>().shield.GetComponent<CircleCollider2D>().enabled = false;
+        //    Time.timeScale = 0.1f;
+        //    StartCoroutine("SlowMotionInCounter");
+        //}
+
         if (collision.gameObject.CompareTag("Weapon") || collision.gameObject.CompareTag("Skill"))
         {
             if (collision.gameObject.CompareTag("Weapon"))
@@ -346,5 +370,21 @@ public class BossHeat : MonoBehaviour
             }
         }
     }
+
+    //IEnumerator SlowMotionInCounter()
+    //{
+    //    float slowTime = 0f;
+    //    while(true)
+    //    {
+    //        yield return null;
+    //
+    //        slowTime += Time.unscaledDeltaTime;
+    //        if(slowTime > 0.5f)
+    //        {
+    //            Time.timeScale = 1f;
+    //            break;
+    //        }
+    //    }
+    //}
 }
 

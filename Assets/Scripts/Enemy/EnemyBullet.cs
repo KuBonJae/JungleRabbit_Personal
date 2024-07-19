@@ -8,7 +8,7 @@ public class EnemyBullet : MonoBehaviour
 
     private Transform playerTransform;
 
-    private Vector2 bulletDirection;
+    public Vector2 bulletDirection;
 
     // Start is called before the first frame update
     void Start()
@@ -17,7 +17,6 @@ public class EnemyBullet : MonoBehaviour
         playerTransform = GameObject.FindWithTag("Player").transform;
         //플레이어 위치와 몬스터 위치 기반으로 방향 설정
         bulletDirection = (playerTransform.position - transform.position).normalized;
-
     }
 
     void Update()
@@ -27,7 +26,17 @@ public class EnemyBullet : MonoBehaviour
         transform.Translate((Vector3)(bulletDirection * bulletSpeed * Time.deltaTime));
     }
 
-
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        //if(collision.gameObject.CompareTag("Shield"))
+        //{
+        //    bulletDirection *= -1;
+        //    this.gameObject.tag = "Weapon";
+        //    GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Control_Sword>().shield.GetComponent<CircleCollider2D>().enabled = false;
+        //    Time.timeScale = 0.1f;
+        //    StartCoroutine("SlowMotionInCounter");
+        //}
+    }
 
     // 탄막이 다른 콜라이더와 충돌 시 OnTriggerEnter2D 클래스 발생
     void OnTriggerStay2D(Collider2D other)
@@ -40,4 +49,19 @@ public class EnemyBullet : MonoBehaviour
         }
     }
 
+    //IEnumerator SlowMotionInCounter()
+    //{
+    //    float slowTime = 0f;
+    //    while (true)
+    //    {
+    //        yield return null;
+    //
+    //        slowTime += Time.unscaledDeltaTime;
+    //        if (slowTime > 0.05f)
+    //        {
+    //            Time.timeScale = 1f;
+    //            break;
+    //        }
+    //    }
+    //}
 }

@@ -15,6 +15,7 @@ TagManager:
   - ITEM
   - EnemyWeapon
   - Indicator
+  - Shield
   layers:
   - Default
   - TransparentFX
@@ -25,7 +26,7 @@ TagManager:
   - Player
   - Bullet
   - Weapon
-  - 
+  - Shield
   - Dash_Sword
   - 
   - 
