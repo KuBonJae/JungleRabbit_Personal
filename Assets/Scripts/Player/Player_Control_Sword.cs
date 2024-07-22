@@ -24,7 +24,7 @@ public class Player_Control_Sword : MonoBehaviour
     int dashCount = 2;
     float dashCoolTime = 0f;
     bool dash_ing = false;
-    float dashDelay = 0.15f;
+    float dashDelay = 0.1f;
     float deltaDashDelay = 0f;
     bool justOneDashPerOneClick = true;
 
@@ -48,6 +48,8 @@ public class Player_Control_Sword : MonoBehaviour
         StartCoroutine("DashSpeed");
         dashCount = DataManager.Instance.DashCount;
         healthUIManager.SethealthCount(DataManager.Instance.Health);
+        // sword user has 3 dashes when they start
+        GameObject.Find("Canvas_Dash").transform.GetChild(3).gameObject.SetActive(false);
     }
 
     // Update is called once per frame

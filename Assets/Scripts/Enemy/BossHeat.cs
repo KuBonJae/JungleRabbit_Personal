@@ -205,12 +205,7 @@ public class BossHeat : MonoBehaviour
         //    Debug.Log("카운터!");
         //    bossHP -= DataManager.Instance.Damage;
         //    hpText.GetComponent<TextMeshProUGUI>().text = DataManager.Instance.Damage.ToString();
-        //    beDamaged = true;
-        //    Vector3 revDir = transform.position - GameObject.FindGameObjectWithTag("Player").transform.position;
-        //    GetComponent<Rigidbody2D>().AddForce(revDir.normalized * 500f);
-        //    GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Control_Sword>().shield.GetComponent<CircleCollider2D>().enabled = false;
-        //    Time.timeScale = 0.1f;
-        //    StartCoroutine("SlowMotionInCounter");
+        //    beDamaged = true;d
         //}
 
         if (collision.gameObject.CompareTag("Weapon") || collision.gameObject.CompareTag("Skill"))

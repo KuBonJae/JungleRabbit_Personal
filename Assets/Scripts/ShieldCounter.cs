@@ -46,6 +46,7 @@ public class ShieldCounter : MonoBehaviour
             GetComponent<CircleCollider2D>().enabled = false;
             StartCoroutine("SlowMotionInCounter");
             StartCoroutine("ParryCameraOn");
+            StartCoroutine("Invincible");
         }
         else if (collision.gameObject.CompareTag("BOSS"))
         {
@@ -109,5 +110,14 @@ public class ShieldCounter : MonoBehaviour
         parryCamera.SetActive(true);
         yield return new WaitForSecondsRealtime(0.7f);
         parryCamera.SetActive(false);
+    }
+
+    IEnumerator Invincible()
+    {
+        DataManager.Instance.DashState = true;
+        //this.gameObject.layer = 10;
+        yield return new WaitForSeconds(0.25f);
+        DataManager.Instance.DashState = false;
+        //this.gameObject.layer = 6;
     }
 }
