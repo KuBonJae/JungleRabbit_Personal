@@ -74,7 +74,7 @@ public class SettingJobController : MonoBehaviour
         DataManager.Instance.SpecialWeapon = null;
         DataManager.Instance.SwordLength = 2f;
         DataManager.Instance.AxeDamage = 5f;
-        DataManager.Instance.ShurikenDamage = 2f;
+        DataManager.Instance.ShurikenDamage = 3f;
 
         DataManager.Instance.firstDamage = DataManager.Instance.Damage;
         DataManager.Instance.firstMaxHealth = DataManager.Instance.MaxHealth;

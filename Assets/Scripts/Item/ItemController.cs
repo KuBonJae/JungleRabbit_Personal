@@ -69,7 +69,7 @@ public class ItemController : MonoBehaviour
             case "card1":
                 Debug.Log("에픽스킬!");
                 if (DataManager.Instance.SpecialWeapon == SpecialWeaponType.ShortSword.ToString())
-                    DataManager.Instance.ShurikenDamage += 2;
+                    DataManager.Instance.ShurikenDamage += 3f;
                 if (DataManager.Instance.SpecialWeapon == SpecialWeaponType.LongSword.ToString())
                     DataManager.Instance.SwordLength += 1f;
                 if (DataManager.Instance.SpecialWeapon == SpecialWeaponType.Axe.ToString())
