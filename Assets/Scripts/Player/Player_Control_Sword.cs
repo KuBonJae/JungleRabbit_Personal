@@ -115,7 +115,7 @@ public class Player_Control_Sword : MonoBehaviour
                     new Color(shield.GetComponent<SpriteRenderer>().color.r, shield.GetComponent<SpriteRenderer>().color.g, shield.GetComponent<SpriteRenderer>().color.b, 0);
                 shield.GetComponent<CircleCollider2D>().enabled = false;
 
-                if (Time.timeScale > 0.5f)
+                if (Time.timeScale > 0.5f && !GameObject.Find("Camera").transform.Find("ParryCamera").gameObject.activeSelf)
                 {
                     //shield.GetComponent<SpriteRenderer>().color =
                     //    new Color(shield.GetComponent<SpriteRenderer>().color.r, shield.GetComponent<SpriteRenderer>().color.g, shield.GetComponent<SpriteRenderer>().color.b, 120);

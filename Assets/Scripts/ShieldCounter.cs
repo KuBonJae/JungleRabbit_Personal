@@ -2,13 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Cinemachine;
+using System.Runtime.CompilerServices;
 
 public class ShieldCounter : MonoBehaviour
 {
+    //[SerializeField] CinemachineVirtualCamera parryCamera;
+    GameObject parryCamera;
+    float originalSize;
+    public ParticleSystem parryParticle;
     // Start is called before the first frame update
     void Start()
     {
-        
+        //parryCamera = GameObject.Find("Camera").transform.Find("ParryCamera").GetComponent<CinemachineVirtualCamera>();
+        parryCamera = GameObject.Find("Camera").transform.Find("ParryCamera").gameObject;
+        parryCamera.GetComponent<CinemachineFreeLook>().m_Lens.OrthographicSize = 3f;
     }
 
     // Update is called once per frame
@@ -22,6 +30,13 @@ public class ShieldCounter : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Debug.Log("카운터!");
+
+            parryCamera.gameObject.transform.position = new Vector3(collision.transform.position.x, collision.transform.position.y, collision.transform.position.z - 5f);
+            Instantiate(parryParticle, collision.transform.position, collision.transform.rotation);
+            //parryParticle.Play();
+            //Destroy(parryParticle, parryParticle.main.duration);
+            //parryCamera.m_Lens.OrthographicSize = 10f;
+
             collision.transform.GetComponent<EnemyHeat>().enemyHP -= DataManager.Instance.Damage;
             collision.transform.GetComponent<EnemyHeat>().hpText.GetComponent<TextMeshProUGUI>().text = DataManager.Instance.Damage.ToString();
             collision.transform.GetComponent<EnemyHeat>().beDamaged = true;
@@ -30,10 +45,18 @@ public class ShieldCounter : MonoBehaviour
             //GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Control_Sword>().shield.GetComponent<CircleCollider2D>().enabled = false;
             GetComponent<CircleCollider2D>().enabled = false;
             StartCoroutine("SlowMotionInCounter");
+            StartCoroutine("ParryCameraOn");
         }
         else if (collision.gameObject.CompareTag("BOSS"))
         {
             Debug.Log("카운터!");
+
+            parryCamera.gameObject.transform.position = new Vector3(collision.transform.position.x, collision.transform.position.y, collision.transform.position.z - 5f);
+            Instantiate(parryParticle, collision.transform.position, collision.transform.rotation);
+            //parryParticle.Play();
+            //Destroy(parryParticle, parryParticle.main.duration);
+            //parryCamera.m_Lens.OrthographicSize = 10f;
+
             collision.transform.GetComponent<BossHeat>().bossHP -= DataManager.Instance.Damage;
             collision.transform.GetComponent<BossHeat>().hpText.GetComponent<TextMeshProUGUI>().text = DataManager.Instance.Damage.ToString();
             collision.transform.GetComponent<BossHeat>().beDamaged = true;
@@ -42,10 +65,17 @@ public class ShieldCounter : MonoBehaviour
             //GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Control_Sword>().shield.GetComponent<CircleCollider2D>().enabled = false;
             GetComponent<CircleCollider2D>().enabled = false;
             StartCoroutine("SlowMotionInCounter");
+            StartCoroutine("ParryCameraOn");
         }
         else if (collision.gameObject.CompareTag("EnemyWeapon"))
         {
-            if(collision.transform.GetComponent<BossShootBullet>() != null)
+            parryCamera.gameObject.transform.position = new Vector3(collision.transform.position.x, collision.transform.position.y, collision.transform.position.z - 5f);
+            Instantiate(parryParticle, collision.transform.position, collision.transform.rotation);
+            //parryParticle.Play();
+            //Destroy(parryParticle, parryParticle.main.duration);
+            //parryCamera.m_Lens.OrthographicSize = 10f;
+
+            if (collision.transform.GetComponent<BossShootBullet>() != null)
                 collision.transform.GetComponent<BossShootBullet>().bulletDirection *= -1;
             else
                 collision.transform.GetComponent<EnemyBullet>().bulletDirection *= -1;
@@ -53,6 +83,7 @@ public class ShieldCounter : MonoBehaviour
             //GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Control_Sword>().shield.GetComponent<CircleCollider2D>().enabled = false;
             GetComponent<CircleCollider2D>().enabled = false;
             StartCoroutine("SlowMotionInCounter");
+            StartCoroutine("ParryCameraOn");
         }
     }
 
@@ -71,5 +102,12 @@ public class ShieldCounter : MonoBehaviour
                 break;
             }
         }
+    }
+
+    IEnumerator ParryCameraOn()
+    {
+        parryCamera.SetActive(true);
+        yield return new WaitForSecondsRealtime(0.7f);
+        parryCamera.SetActive(false);
     }
 }

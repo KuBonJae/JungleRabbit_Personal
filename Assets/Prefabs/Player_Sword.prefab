@@ -1165,6 +1165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a39a289ba461bbb4f8986cc2e7454ed6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parryParticle: {fileID: 8451222142081294584, guid: d8bf542930a24024aaca0d05fc6c3695, type: 3}
 --- !u!1 &5684458291887914661
 GameObject:
   m_ObjectHideFlags: 0
