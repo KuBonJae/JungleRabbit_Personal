@@ -21,6 +21,8 @@ public class TeleportController : MonoBehaviour
         {
             Debug.Log("지정된 오브젝트와 Door의 충돌 감지!");
             // 문과 연결된 장소로 이동
+            if(DataManager.Instance.Weapon == WeaponType.Sword.ToString())
+                GetComponent<Player_Control_Sword>().speed = DataManager.Instance.Speed;
             transform.position = collision.gameObject.GetComponent<DoorData>().ConnectedDoorPosition;
         }
 

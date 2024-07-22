@@ -25,11 +25,13 @@ public class BossHeat : MonoBehaviour
     float resetForceCooltime = 1f;
     float resetForceDelay = 0f;
 
+    public GameObject hitParticle;
+
     // Start is called before the first frame update
     void Start()
     {
-        bossHP = 50.0f * DataManager.Instance.StageLevel;
-        maxHP = 50.0f * DataManager.Instance.StageLevel;
+        bossHP = 75.0f * DataManager.Instance.StageLevel;
+        maxHP = 75.0f * DataManager.Instance.StageLevel;
 
         canvas = GameObject.Find("Canvas");
         StartCoroutine("ShowDamageText");
@@ -287,6 +289,7 @@ public class BossHeat : MonoBehaviour
 
             }
             beDamaged = true;
+            Instantiate(hitParticle, transform.position, transform.rotation);
         }
 
         // when enemy heated, compare bossHP
@@ -297,7 +300,6 @@ public class BossHeat : MonoBehaviour
                 HpBarSlider.value = 0;
                 HpBarSlider.transform.parent.gameObject.SetActive(false);
                 Destroy(gameObject);
-                //Instantiate(deathEffectPrefab, transform.position, quaternion.identity); 사망 파티클
 
                 break;
 

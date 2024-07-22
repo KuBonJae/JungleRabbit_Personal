@@ -229,7 +229,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 8
+  orthographic size: 8.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1555,8 +1555,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BindingMode: 1
   m_FollowOffset: {x: 0, y: 0, z: -10}
-  m_XDamping: 1
-  m_YDamping: 1
+  m_XDamping: 0.5
+  m_YDamping: 0.5
   m_ZDamping: 1
   m_AngularDampingMode: 0
   m_PitchDamping: 0
@@ -1688,9 +1688,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3076539901436421365, guid: bdfd56e003a9ceb4f871f61297d993f1, type: 3}
       propertyPath: m_text
-      value: '(MRB)
-
-        Skill'
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3076539901436421365, guid: bdfd56e003a9ceb4f871f61297d993f1, type: 3}
       propertyPath: m_fontColor.a
@@ -4393,8 +4391,13 @@ MonoBehaviour:
 
     RIGHTCLICK - <color=red>SKILL</color>
 
-    [
-    TAB ]  -  <color=green>STAT / MAP</color>'
+    [Q]
+    - Parry (Only For Sword)
+
+    [R] - Reload (Only For Gun)
+
+    [ TAB ]  -  <color=green>STAT
+    / MAP</color>'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5580,7 +5583,7 @@ MonoBehaviour:
   m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 8
+    OrthographicSize: 8.5
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0

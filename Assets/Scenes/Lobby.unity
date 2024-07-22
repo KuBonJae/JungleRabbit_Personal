@@ -171,10 +171,17 @@ MonoBehaviour:
   firstSpeed: 0
   firstAttackSpeed: 0
   firstDashCount: 0
+  additionalDamage: 0
+  additionalMaxHealth: 0
+  additionalSpeed: 0
+  additionalAttackSpeed: 0
+  additionalDashCount: 0
   justCleared: 0
   specialWeaponGet: 0
   epicSkill: 0
   isDead: 0
+  firstClassChage: 1
+  beHit: 0
 --- !u!1 &133202301
 GameObject:
   m_ObjectHideFlags: 0

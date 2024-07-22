@@ -1050,9 +1050,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc97262e4cd42949a9dd5dbc0056a1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyHP: 0
   deathEffectPrefab: {fileID: 5763951098823652745, guid: 5ae71f8e33ef5ab43beb71806ec277c4, type: 3}
   hpText: {fileID: 4203466645338746309, guid: 12c73821508ff05468a6afa8eaf23097, type: 3}
   canvas: {fileID: 0}
+  beDamaged: 0
+  height: 1.5
+  deltaHeight: 0
+  hitParticle: {fileID: 7112312091984310643, guid: 9c6c778d384b94e45b6a152430aa943c, type: 3}
 --- !u!1 &8831180562166487045
 GameObject:
   m_ObjectHideFlags: 0

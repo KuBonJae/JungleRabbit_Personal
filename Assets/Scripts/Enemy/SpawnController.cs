@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,11 +19,11 @@ public class SpawnController : MonoBehaviour
     private int numberOfEnemy = 5; // 몬스터 생성 개수
 
     //맵 상에서 적 생성 반경
-    private float minX = -15.0f;
-    private float maxX = 15.0f;
-    private float minY = -15.0f;
-    private float maxY = 15.0f;
-    private float minDistanceFromPlayer = 10.0f; // 플레이어와 최소 거리
+    private float minX = -20.0f;
+    private float maxX = 20.0f;
+    private float minY = -20.0f;
+    private float maxY = 20.0f;
+    private float minDistanceFromPlayer = 15.0f; // 플레이어와 최소 거리
 
     // Start is called before the first frame update
     void Start()
@@ -45,7 +46,8 @@ public class SpawnController : MonoBehaviour
         }
         Debug.Log("스폰 에너미");
         int spawnedEnemys = 0;
-        while (spawnedEnemys < numberOfEnemy)
+        int enemyNum = DataManager.Instance.StageLevel > 4? numberOfEnemy * 4 + (DataManager.Instance.StageLevel - 1) : numberOfEnemy * DataManager.Instance.StageLevel;
+        while (spawnedEnemys < enemyNum)
         {
 
             // Select Enemy type Random

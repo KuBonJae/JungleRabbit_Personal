@@ -29,7 +29,10 @@ public class SwingTheLargeSword : MonoBehaviour
         {
             CoolDownUI[i] = GameObject.Find("Battle_Ui").transform.Find("SkillCoolDown").transform.GetChild(i).gameObject;
             if (CoolDownUI[i].name.Contains("Text"))
+            {
                 skillCoolDownText = CoolDownUI[i].transform.GetComponent<TextMeshProUGUI>();
+                skillCoolDownText.text = "(MRB)\nSkill";
+            }
         }
     }
 

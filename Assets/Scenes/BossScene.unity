@@ -786,6 +786,14 @@ PrefabInstance:
       propertyPath: HpBarSlider
       value: 
       objectReference: {fileID: 798383663}
+    - target: {fileID: 3696749345053803533, guid: 6951be28a7942f04da118143d712eb51, type: 3}
+      propertyPath: hitParticle
+      value: 
+      objectReference: {fileID: 7112312091984310643, guid: 9c6c778d384b94e45b6a152430aa943c, type: 3}
+    - target: {fileID: 3696749345053803533, guid: 6951be28a7942f04da118143d712eb51, type: 3}
+      propertyPath: explosionParticle
+      value: 
+      objectReference: {fileID: 7112312091984310643, guid: 9c6c778d384b94e45b6a152430aa943c, type: 3}
     - target: {fileID: 3885698754619578458, guid: 6951be28a7942f04da118143d712eb51, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.18130732
@@ -1962,9 +1970,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3076539901436421365, guid: bdfd56e003a9ceb4f871f61297d993f1, type: 3}
       propertyPath: m_text
-      value: '(MRB)
-
-        Skill
+      value: '
 
 '
       objectReference: {fileID: 0}
@@ -9589,8 +9595,13 @@ MonoBehaviour:
 
     RIGHTCLICK - <color=red>SKILL</color>
 
-    [
-    TAB ]  -  <color=green>STAT / MAP</color>'
+    [Q]
+    - Parry (Only For Sword)
+
+    [R] - Reload (Only For Gun)
+
+    [ TAB ]  -  <color=green>STAT
+    / MAP</color>'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -10836,7 +10847,7 @@ MonoBehaviour:
   m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 8
+    OrthographicSize: 8.5
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0

@@ -25,6 +25,8 @@ public class EnemyHeat : MonoBehaviour
     public float height = 1.5f;
     public float deltaHeight = 0f;
 
+    public GameObject hitParticle;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -173,9 +175,9 @@ public class EnemyHeat : MonoBehaviour
                 enemyHP = DataManager.Instance.Damage;
 
             }
+
+            Instantiate(hitParticle, transform.position, transform.rotation);
         }
-        // when enemy heated, compare enemyHP
-        //GameObject hp1 = transform.Find("HP_1").gameObject;
 
 
 

@@ -15,19 +15,19 @@ public class DoorData : MonoBehaviour
     {
         if (gameObject.name == "RightDoor")
         {
-            connectedDoorPosition = new Vector3(transform.position.x + 43, transform.position.y, transform.position.z);
+            connectedDoorPosition = new Vector3(transform.position.x + 41, transform.position.y, transform.position.z);
         }
         else if (gameObject.name == "LeftDoor")
         {
-            connectedDoorPosition = new Vector3(transform.position.x - 43, transform.position.y, transform.position.z);
+            connectedDoorPosition = new Vector3(transform.position.x - 41, transform.position.y, transform.position.z);
         }
         else if (gameObject.name == "TopDoor")
         {
-            connectedDoorPosition = new Vector3(transform.position.x, transform.position.y + 43, transform.position.z);
+            connectedDoorPosition = new Vector3(transform.position.x, transform.position.y + 42, transform.position.z);
         }
         else if (gameObject.name == "BottomDoor")
         {
-            connectedDoorPosition = new Vector3(transform.position.x, transform.position.y - 43, transform.position.z);
+            connectedDoorPosition = new Vector3(transform.position.x, transform.position.y - 42, transform.position.z);
         }
         if (gameObject.name == "SecretDoorEnter")
         {
