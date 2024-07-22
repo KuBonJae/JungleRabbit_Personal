@@ -33,7 +33,7 @@ public class EnemyHeat : MonoBehaviour
         enemyHP = 5.0f * DataManager.Instance.StageLevel;
         //hpRectTransform = hpTextObject.GetComponent<RectTransform>();
         canvas = GameObject.Find("Canvas");
-        StartCoroutine("ShowDamageText");
+        //StartCoroutine("ShowDamageText");
     }
 
     // Update is called once per frame
@@ -179,8 +179,11 @@ public class EnemyHeat : MonoBehaviour
             Instantiate(hitParticle, transform.position, transform.rotation);
         }
 
+        checkEnemysHP();
+    }
 
-
+    public void checkEnemysHP()
+    {
         Transform enemyHPTransform = gameObject.transform.Find("EnemyHP");
         Transform hp2Transform = enemyHPTransform.Find("HP_2");
         Transform hp3Transform = enemyHPTransform.Find("HP_3");
@@ -192,8 +195,7 @@ public class EnemyHeat : MonoBehaviour
                 Debug.Log("Die!");
                 Destroy(gameObject);
                 //Instantiate(deathEffectPrefab, transform.position, quaternion.identity); 사망 파티클
-
-                break;
+                return;
 
             case <= 1:
                 Debug.Log("적피 1");
@@ -255,6 +257,8 @@ public class EnemyHeat : MonoBehaviour
             default:
                 break;
         }
+
+        StartCoroutine("ShowDamageText");
     }
 
     IEnumerator ShowDamageText()
@@ -272,6 +276,8 @@ public class EnemyHeat : MonoBehaviour
                 hpTextObject.GetComponent<RectTransform>().position = hpTextPos;
                 hpTextObject = null;
                 beDamaged = false;
+
+                break;
             }
         }
     }

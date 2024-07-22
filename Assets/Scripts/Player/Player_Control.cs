@@ -13,6 +13,10 @@ public class Player_Control : MonoBehaviour
     // Player Movement
     public float horizontalInput;
     public float verticalInput;
+    bool up = false;
+    bool down = false;
+    bool right = false;
+    bool left = false;
 
     // Player UI
     public GameObject map;
@@ -124,6 +128,126 @@ public class Player_Control : MonoBehaviour
     // player move block 
     private void Block()
     {
+        RaycastHit2D[] hitDownRight = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.right).normalized);
+        for (int i = 0; i < hitDownRight.Length; i++)
+        {
+            if (hitDownRight[i].transform != null)
+            {
+                if (hitDownRight[i].distance < 0.5 && hitDownRight[i].collider.CompareTag("Wall"))
+                {
+                    if (horizontalInput > 0)
+                    {
+                        //horizontalInput = 0;
+                        right = true;
+                    }
+                    if (verticalInput < 0)
+                    {
+                        //verticalInput = 0;
+                        down = true;
+                    }
+
+                    if (down && right)
+                    {
+                        down = right = false;
+                        horizontalInput = verticalInput = 0;
+                        return;
+                    }
+                    else
+                        down = right = false;
+                }
+            }
+        }
+
+        RaycastHit2D[] hitDownLeft = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.left).normalized);
+        for (int i = 0; i < hitDownLeft.Length; i++)
+        {
+            if (hitDownLeft[i].transform != null)
+            {
+                if (hitDownLeft[i].distance < 0.5 && hitDownLeft[i].collider.CompareTag("Wall"))
+                {
+                    if (horizontalInput < 0)
+                    {
+                        //horizontalInput = 0;
+                        left = true;
+                    }
+                    if (verticalInput < 0)
+                    {
+                        //verticalInput = 0;
+                        down = true;
+                    }
+
+                    if (down && left)
+                    {
+                        down = left = false;
+                        horizontalInput = verticalInput = 0;
+                        return;
+                    }
+                    else
+                        down = left = false;
+                }
+            }
+        }
+
+        RaycastHit2D[] hitUpRight = Physics2D.RaycastAll(transform.position, (Vector2.up + Vector2.right).normalized);
+        for (int i = 0; i < hitUpRight.Length; i++)
+        {
+            if (hitUpRight[i].transform != null)
+            {
+                if (hitUpRight[i].distance < 0.5 && hitUpRight[i].collider.CompareTag("Wall"))
+                {
+                    if (horizontalInput > 0)
+                    {
+                        //horizontalInput = 0;
+                        right = true;
+                    }
+                    if (verticalInput > 0)
+                    {
+                        //verticalInput = 0;
+                        up = true;
+                    }
+
+                    if (up && right)
+                    {
+                        up = right = false;
+                        horizontalInput = verticalInput = 0;
+                        return;
+                    }
+                    else
+                        up = right = false;
+                }
+            }
+        }
+
+        RaycastHit2D[] hitUpLeft = Physics2D.RaycastAll(transform.position, (Vector2.up + Vector2.left).normalized);
+        for (int i = 0; i < hitUpLeft.Length; i++)
+        {
+            if (hitUpLeft[i].transform != null)
+            {
+                if (hitUpLeft[i].distance < 0.5 && hitUpLeft[i].collider.CompareTag("Wall"))
+                {
+                    if (horizontalInput < 0)
+                    {
+                        //horizontalInput = 0;
+                        left = true;
+                    }
+                    if (verticalInput > 0)
+                    {
+                        //verticalInput = 0;
+                        up = true;
+                    }
+
+                    if (up && left)
+                    {
+                        up = left = false;
+                        horizontalInput = verticalInput = 0;
+                        return;
+                    }
+                    else
+                        up = left = false;
+                }
+            }
+        }
+
         RaycastHit2D[] hitdown = Physics2D.RaycastAll(transform.position, Vector2.down);
 
         for (int i = 0; i < hitdown.Length; i++)
@@ -135,6 +259,7 @@ public class Player_Control : MonoBehaviour
                     if (verticalInput < 0)
                     {
                         verticalInput = 0;
+                        return;
                     }
                 }
 
@@ -151,6 +276,7 @@ public class Player_Control : MonoBehaviour
                     if (verticalInput > 0)
                     {
                         verticalInput = 0;
+                        return;
                     }
                 }
             }
@@ -166,6 +292,7 @@ public class Player_Control : MonoBehaviour
                     if (horizontalInput < 0)
                     {
                         horizontalInput = 0;
+                        return;
                     }
                 }
 
@@ -182,82 +309,7 @@ public class Player_Control : MonoBehaviour
                     if (horizontalInput > 0)
                     {
                         horizontalInput = 0;
-                    }
-                }
-            }
-        }
-
-        RaycastHit2D[] hitDownRight = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.right).normalized);
-        for (int i = 0; i < hitDownRight.Length; i++)
-        {
-            if (hitDownRight[i].transform != null)
-            {
-                if (hitDownRight[i].distance < 0.5 && hitDownRight[i].collider.CompareTag("Wall"))
-                {
-                    if (horizontalInput > 0)
-                    {
-                        horizontalInput = 0;
-                    }
-                    if(verticalInput < 0)
-                    {
-                        verticalInput = 0;
-                    }
-                }
-            }
-        }
-
-        RaycastHit2D[] hitDownLeft = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.right).normalized);
-        for (int i = 0; i < hitDownLeft.Length; i++)
-        {
-            if (hitDownLeft[i].transform != null)
-            {
-                if (hitDownLeft[i].distance < 0.5 && hitDownLeft[i].collider.CompareTag("Wall"))
-                {
-                    if (horizontalInput < 0)
-                    {
-                        horizontalInput = 0;
-                    }
-                    if (verticalInput < 0)
-                    {
-                        verticalInput = 0;
-                    }
-                }
-            }
-        }
-
-        RaycastHit2D[] hitUpRight = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.right).normalized);
-        for (int i = 0; i < hitUpRight.Length; i++)
-        {
-            if (hitUpRight[i].transform != null)
-            {
-                if (hitUpRight[i].distance < 0.5 && hitUpRight[i].collider.CompareTag("Wall"))
-                {
-                    if (horizontalInput > 0)
-                    {
-                        horizontalInput = 0;
-                    }
-                    if (verticalInput > 0)
-                    {
-                        verticalInput = 0;
-                    }
-                }
-            }
-        }
-
-        RaycastHit2D[] hitUpLeft = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.right).normalized);
-        for (int i = 0; i < hitUpLeft.Length; i++)
-        {
-            if (hitUpLeft[i].transform != null)
-            {
-                if (hitUpLeft[i].distance < 0.5 && hitUpLeft[i].collider.CompareTag("Wall"))
-                {
-                    if (horizontalInput < 0)
-                    {
-                        horizontalInput = 0;
-                    }
-                    if (verticalInput > 0)
-                    {
-                        verticalInput = 0;
+                        return;
                     }
                 }
             }

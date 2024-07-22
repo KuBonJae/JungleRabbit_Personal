@@ -14,10 +14,6 @@ public class Player_Control_Sword : MonoBehaviour
     bool down = false;
     bool right = false;
     bool left = false;
-    bool upright = false;
-    bool upleft = false;
-    bool downright = false;
-    bool downleft = false;
     Vector2 prevPosition = new Vector2(951201, 980423);
 
     public float speed;
@@ -49,7 +45,7 @@ public class Player_Control_Sword : MonoBehaviour
         dashCount = DataManager.Instance.DashCount;
         healthUIManager.SethealthCount(DataManager.Instance.Health);
         // sword user has 3 dashes when they start
-        GameObject.Find("Canvas_Dash").transform.GetChild(3).gameObject.SetActive(false);
+        GameObject.Find("Canvas_Dash").transform.GetChild(3).gameObject.SetActive(true);
     }
 
     // Update is called once per frame
@@ -99,7 +95,7 @@ public class Player_Control_Sword : MonoBehaviour
             shield.SetActive(true);
             shield.GetComponent<CircleCollider2D>().enabled = true;
             shield.GetComponent<SpriteRenderer>().color =
-                        new Color(shield.GetComponent<SpriteRenderer>().color.r, shield.GetComponent<SpriteRenderer>().color.g, shield.GetComponent<SpriteRenderer>().color.b, 120);
+                        new Color(0f, 0f, 1f, 120f / 255f);
             StartCoroutine("ShieldCounter");
         }
     }
@@ -114,13 +110,13 @@ public class Player_Control_Sword : MonoBehaviour
             if (shieldRemainTime > 0.1f)
             {
                 shield.GetComponent<SpriteRenderer>().color = 
-                    new Color(shield.GetComponent<SpriteRenderer>().color.r, shield.GetComponent<SpriteRenderer>().color.g, shield.GetComponent<SpriteRenderer>().color.b, 0);
+                    new Color(0f, 0f, 1f, 0f);
                 shield.GetComponent<CircleCollider2D>().enabled = false;
 
                 if (Time.timeScale > 0.5f && !GameObject.Find("Camera").transform.Find("ParryCamera").gameObject.activeSelf)
                 {
-                    //shield.GetComponent<SpriteRenderer>().color =
-                    //    new Color(shield.GetComponent<SpriteRenderer>().color.r, shield.GetComponent<SpriteRenderer>().color.g, shield.GetComponent<SpriteRenderer>().color.b, 120);
+                    shield.GetComponent<SpriteRenderer>().color =
+                        new Color(0f, 0f, 1f, 120f / 255f);
                     shield.SetActive(false);
                     shieldActivate = false;
                     break;
@@ -317,18 +313,138 @@ public class Player_Control_Sword : MonoBehaviour
 
     public void Block()
     {
+        RaycastHit2D[] hitDownRight = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.right).normalized);
+        for (int i = 0; i < hitDownRight.Length; i++)
+        {
+            if (hitDownRight[i].transform != null)
+            {
+                if (hitDownRight[i].distance < 0.5 && hitDownRight[i].collider.CompareTag("Wall"))
+                {
+                    if (horizontalInput > 0)
+                    {
+                        //horizontalInput = 0;
+                        right = true;
+                    }
+                    if (verticalInput < 0)
+                    {
+                        //verticalInput = 0;
+                        down = true;
+                    }
+
+                    if (down && right)
+                    {
+                        down = right = false;
+                        horizontalInput = verticalInput = 0;
+                        return;
+                    }
+                    else
+                        down = right = false;
+                }
+            }
+        }
+
+        RaycastHit2D[] hitDownLeft = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.left).normalized);
+        for (int i = 0; i < hitDownLeft.Length; i++)
+        {
+            if (hitDownLeft[i].transform != null)
+            {
+                if (hitDownLeft[i].distance < 0.5 && hitDownLeft[i].collider.CompareTag("Wall"))
+                {
+                    if (horizontalInput < 0)
+                    {
+                        //horizontalInput = 0;
+                        left = true;
+                    }
+                    if (verticalInput < 0)
+                    {
+                        //verticalInput = 0;
+                        down = true;
+                    }
+
+                    if (down && left)
+                    {
+                        down = left = false;
+                        horizontalInput = verticalInput = 0;
+                        return;
+                    }
+                    else
+                        down = left = false;
+                }
+            }
+        }
+
+        RaycastHit2D[] hitUpRight = Physics2D.RaycastAll(transform.position, (Vector2.up + Vector2.right).normalized);
+        for (int i = 0; i < hitUpRight.Length; i++)
+        {
+            if (hitUpRight[i].transform != null)
+            {
+                if (hitUpRight[i].distance < 0.5 && hitUpRight[i].collider.CompareTag("Wall"))
+                {
+                    if (horizontalInput > 0)
+                    {
+                        //horizontalInput = 0;
+                        right = true;
+                    }
+                    if (verticalInput > 0)
+                    {
+                        //verticalInput = 0;
+                        up = true;
+                    }
+
+                    if (up && right)
+                    {
+                        up = right = false;
+                        horizontalInput = verticalInput = 0;
+                        return;
+                    }
+                    else
+                        up = right = false;
+                }
+            }
+        }
+
+        RaycastHit2D[] hitUpLeft = Physics2D.RaycastAll(transform.position, (Vector2.up + Vector2.left).normalized);
+        for (int i = 0; i < hitUpLeft.Length; i++)
+        {
+            if (hitUpLeft[i].transform != null)
+            {
+                if (hitUpLeft[i].distance < 0.5 && hitUpLeft[i].collider.CompareTag("Wall"))
+                {
+                    if (horizontalInput < 0)
+                    {
+                        //horizontalInput = 0;
+                        left = true;
+                    }
+                    if (verticalInput > 0)
+                    {
+                        //verticalInput = 0;
+                        up = true;
+                    }
+
+                    if (up && left)
+                    {
+                        up = left = false;
+                        horizontalInput = verticalInput = 0;
+                        return;
+                    }
+                    else
+                        up = left = false;
+                }
+            }
+        }
+
         RaycastHit2D[] hitdown = Physics2D.RaycastAll(transform.position, Vector2.down);
 
         for (int i = 0; i < hitdown.Length; i++)
         {
             if (hitdown[i].transform != null)
             {
-                if (hitdown[i].distance < 0.5 && hitdown[i].collider.CompareTag("Wall"))
+                if (hitdown[i].distance < 1 && hitdown[i].collider.CompareTag("Wall"))
                 {
                     if (verticalInput < 0)
                     {
                         verticalInput = 0;
-                        down = true;
+                        return;
                     }
                 }
 
@@ -340,12 +456,12 @@ public class Player_Control_Sword : MonoBehaviour
         {
             if (hitup[i].transform != null)
             {
-                if (hitup[i].distance < 0.5 && hitup[i].collider.CompareTag("Wall"))
+                if (hitup[i].distance < 1 && hitup[i].collider.CompareTag("Wall"))
                 {
                     if (verticalInput > 0)
                     {
                         verticalInput = 0;
-                        up = true;
+                        return;
                     }
                 }
             }
@@ -361,7 +477,7 @@ public class Player_Control_Sword : MonoBehaviour
                     if (horizontalInput < 0)
                     {
                         horizontalInput = 0;
-                        left = true;
+                        return;
                     }
                 }
 
@@ -378,89 +494,10 @@ public class Player_Control_Sword : MonoBehaviour
                     if (horizontalInput > 0)
                     {
                         horizontalInput = 0;
-                        right = true;
+                        return;
                     }
                 }
             }
         }
-
-        RaycastHit2D[] hitDownRight = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.right).normalized);
-        for (int i = 0; i < hitDownRight.Length; i++)
-        {
-            if (hitDownRight[i].transform != null)
-            {
-                if (hitDownRight[i].distance < 0.5 && hitDownRight[i].collider.CompareTag("Wall"))
-                {
-                    if (horizontalInput > 0)
-                    {
-                        horizontalInput = 0;
-                    }
-                    if (verticalInput < 0)
-                    {
-                        verticalInput = 0;
-                    }
-                }
-            }
-        }
-
-        RaycastHit2D[] hitDownLeft = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.right).normalized);
-        for (int i = 0; i < hitDownLeft.Length; i++)
-        {
-            if (hitDownLeft[i].transform != null)
-            {
-                if (hitDownLeft[i].distance < 0.5 && hitDownLeft[i].collider.CompareTag("Wall"))
-                {
-                    if (horizontalInput < 0)
-                    {
-                        horizontalInput = 0;
-                    }
-                    if (verticalInput < 0)
-                    {
-                        verticalInput = 0;
-                    }
-                }
-            }
-        }
-
-        RaycastHit2D[] hitUpRight = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.right).normalized);
-        for (int i = 0; i < hitUpRight.Length; i++)
-        {
-            if (hitUpRight[i].transform != null)
-            {
-                if (hitUpRight[i].distance < 0.5 && hitUpRight[i].collider.CompareTag("Wall"))
-                {
-                    if (horizontalInput > 0)
-                    {
-                        horizontalInput = 0;
-                    }
-                    if (verticalInput > 0)
-                    {
-                        verticalInput = 0;
-                    }
-                }
-            }
-        }
-
-        RaycastHit2D[] hitUpLeft = Physics2D.RaycastAll(transform.position, (Vector2.down + Vector2.right).normalized);
-        for (int i = 0; i < hitUpLeft.Length; i++)
-        {
-            if (hitUpLeft[i].transform != null)
-            {
-                if (hitUpLeft[i].distance < 0.5 && hitUpLeft[i].collider.CompareTag("Wall"))
-                {
-                    if (horizontalInput < 0)
-                    {
-                        horizontalInput = 0;
-                    }
-                    if (verticalInput > 0)
-                    {
-                        verticalInput = 0;
-                    }
-                }
-            }
-        }
-
-        if(!up || !down || !left || !right)
-            up = down = left = right = false;
     }
 }

@@ -40,13 +40,14 @@ public class ShieldCounter : MonoBehaviour
             collision.transform.GetComponent<EnemyHeat>().enemyHP -= DataManager.Instance.Damage;
             collision.transform.GetComponent<EnemyHeat>().hpText.GetComponent<TextMeshProUGUI>().text = DataManager.Instance.Damage.ToString();
             collision.transform.GetComponent<EnemyHeat>().beDamaged = true;
+            collision.transform.GetComponent<EnemyHeat>().checkEnemysHP();
             Vector3 revDir = collision.transform.position - GameObject.FindGameObjectWithTag("Player").transform.position;
             collision.transform.GetComponent<Rigidbody2D>().AddForce(revDir.normalized * 1000f);
             //GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Control_Sword>().shield.GetComponent<CircleCollider2D>().enabled = false;
             GetComponent<CircleCollider2D>().enabled = false;
             StartCoroutine("SlowMotionInCounter");
             StartCoroutine("ParryCameraOn");
-            StartCoroutine("Invincible");
+            //StartCoroutine("Invincible");
         }
         else if (collision.gameObject.CompareTag("BOSS"))
         {
@@ -61,27 +62,45 @@ public class ShieldCounter : MonoBehaviour
             collision.transform.GetComponent<BossHeat>().bossHP -= DataManager.Instance.Damage;
             collision.transform.GetComponent<BossHeat>().hpText.GetComponent<TextMeshProUGUI>().text = DataManager.Instance.Damage.ToString();
             collision.transform.GetComponent<BossHeat>().beDamaged = true;
+            collision.transform.GetComponent<BossHeat>().checkBosssHP();
             Vector3 revDir = collision.transform.position - GameObject.FindGameObjectWithTag("Player").transform.position;
-            collision.transform.GetComponent<Rigidbody2D>().AddForce(revDir.normalized * 500f);
+            collision.transform.GetComponent<Rigidbody2D>().AddForce(revDir.normalized * 1000f);
             //GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Control_Sword>().shield.GetComponent<CircleCollider2D>().enabled = false;
             GetComponent<CircleCollider2D>().enabled = false;
             StartCoroutine("SlowMotionInCounter");
             StartCoroutine("ParryCameraOn");
+            //StartCoroutine("Invincible");
         }
         else if (collision.gameObject.CompareTag("EnemyWeapon"))
         {
-            parryCamera.gameObject.transform.position = new Vector3(collision.transform.position.x, collision.transform.position.y, collision.transform.position.z - 5f);
-            Instantiate(parryParticle, collision.transform.position, collision.transform.rotation);
-            //parryParticle.Play();
-            //Destroy(parryParticle, parryParticle.main.duration);
-            //parryCamera.m_Lens.OrthographicSize = 10f;
 
-            if (collision.transform.GetComponent<BossShootBullet>() != null)
-                collision.transform.GetComponent<BossShootBullet>().bulletDirection *= -1;
+            if (collision.transform.GetComponent<BossShootBullet>() != null || collision.transform.GetComponent<EnemyBullet>() != null)
+            {
+                parryCamera.gameObject.transform.position = new Vector3(collision.transform.position.x, collision.transform.position.y, collision.transform.position.z - 5f);
+                Instantiate(parryParticle, collision.transform.position, collision.transform.rotation);
+
+                // if bullet, reverse their direction and make their tag to player's weapon
+                if (collision.transform.GetComponent<BossShootBullet>() != null)
+                    collision.transform.GetComponent<BossShootBullet>().bulletDirection *= -1;
+                else if (collision.transform.GetComponent<EnemyBullet>() != null)
+                    collision.transform.GetComponent<EnemyBullet>().bulletDirection *= -1;
+
+                collision.gameObject.tag = "Weapon";
+            }
             else
-                collision.transform.GetComponent<EnemyBullet>().bulletDirection *= -1;
-            collision.gameObject.tag = "Weapon";
-            //GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Control_Sword>().shield.GetComponent<CircleCollider2D>().enabled = false;
+            {
+                parryCamera.gameObject.transform.position = new Vector3(collision.transform.parent.transform.parent.position.x, 
+                    collision.transform.parent.transform.parent.position.y, collision.transform.parent.transform.parent.position.z - 5f);
+                Instantiate(parryParticle, collision.transform.parent.transform.parent.position, collision.transform.parent.transform.parent.rotation);
+
+                collision.transform.parent.transform.parent.transform.GetComponent<EnemyHeat>().enemyHP -= DataManager.Instance.Damage;
+                collision.transform.parent.transform.parent.transform.GetComponent<EnemyHeat>().hpText.GetComponent<TextMeshProUGUI>().text = DataManager.Instance.Damage.ToString();
+                collision.transform.parent.transform.parent.transform.GetComponent<EnemyHeat>().beDamaged = true;
+                collision.transform.parent.transform.parent.transform.GetComponent<EnemyHeat>().checkEnemysHP();
+                Vector3 revDir = collision.transform.parent.transform.parent.position - GameObject.FindGameObjectWithTag("Player").transform.position;
+                collision.transform.parent.transform.parent.GetComponent<Rigidbody2D>().AddForce(revDir.normalized * 1000f);
+            }
+            
             GetComponent<CircleCollider2D>().enabled = false;
             StartCoroutine("SlowMotionInCounter");
             StartCoroutine("ParryCameraOn");

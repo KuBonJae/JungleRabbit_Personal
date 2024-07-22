@@ -288,6 +288,10 @@ public class BossHeat : MonoBehaviour
         }
 
         // when enemy heated, compare bossHP
+        checkBosssHP();
+    }
+    public void checkBosssHP()
+    {
         switch (bossHP)
         {
             case <= 0:
